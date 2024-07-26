@@ -61,7 +61,7 @@ tukaj navedite poljubno ime za podatkovno bazo
 
 ###### 4. Zagon docker compose
 
-Postavite se v mapo **projekt_local**, kjer se nahaja datoteka **docker-compose.yml** in izvedite ukaz 
+Postavite se v mapo **SCM**, kjer se nahaja datoteka **docker-compose.yml** in izvedite ukaz 
 ```bash
 docker-compose up --build
 ```
@@ -73,11 +73,11 @@ docker-compose up --build
 3. V stranski vrstici kliknite na Project Settings (Nastavitve projekta).
 4. Izberite zavihek General.
 
-Generirane vrednosti prekopirajte v **projekt_local/frontend/scm/.env**
+Generirane vrednosti prekopirajte v **SCM/frontend/scm/.env**
 
 ###### 6. Zagon frontenda
 
-Postavite se v mapo projekt_local/frontend/scm in izvedite naslednje ukaze:
+Postavite se v mapo SCM/frontend/scm in izvedite naslednje ukaze:
 ```bash
 npm install
 npm run build
