@@ -11,7 +11,7 @@ services:
     depends_on:
       - mongodb
     environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/SCM
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/***your database name goes here***
     volumes:
       - ./backend/scm/src/main/resources/serviceAccountKey.json:/app/serviceAccountKey.json
     networks:
