@@ -29,6 +29,8 @@ Uporabniški vmesnik naj nudi prijazen pregled, iskanje, filtriranje ter izvoz o
 format MS Excel. Konkurenčna prednost izdelka pred konkurenčnimi CRM sistemi bo torej ravno
 enostavnost uporabe.
 
+Povezava do glavnega repozitorija [SCM - povezava](https://github.com/mihaprah/projekt/tree/main)
+
 ## 2. Navodila za namestitev lokalno
 
 #### Koraki za zagon
