@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  springboot-backend:
+    build:
+      context: ./backend/scm
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/***your database name goes here***
+    volumes:
+      - ./backend/scm/src/main/resources/serviceAccountKey.json:/app/serviceAccountKey.json
+    networks:
+      - backend_network
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+    driver: bridge
+
+volumes:
+  mongo-data:
