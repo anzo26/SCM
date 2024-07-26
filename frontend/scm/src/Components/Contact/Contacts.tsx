@@ -349,27 +349,27 @@ const Contacts: React.FC<ContactsProps> = ({
                         <div>
                             <button
                                 onClick={() => setShowTagConfirmation(true)}
-                                className="btn px-4 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                                className="btn px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
                                 Add Tags <FontAwesomeIcon className="mr-1" icon={faTags}/>
                             </button>
                             <button
                                 onClick={() => setShowRemoveTagConfirmation(true)}
-                                className="btn px-4 btn-sm bg-red-600 border-0 text-white dark:bg-red-700 dark:hover:bg-red-700 rounded-8 font-semibold hover:scale-105 transition hover:bg-red-700 ml-2 mr-5">
+                                className="btn px-4 btn-sm bg-red-600 border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-red-700 ml-2 mr-5">
                                 Remove Tags <FontAwesomeIcon className="mr-1" icon={faTags}/>
                             </button>
                             <button
                                 onClick={handleAddProps}
-                                className="btn px-4 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark ml-2">
+                                className="btn px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark ml-2">
                                 Add Prop <FontAwesomeIcon className="mr-1" icon={faPlus}/>
                             </button>
                             <button
                                 onClick={handleRemoveProps}
-                                className="btn px-4 btn-sm bg-red-600 border-0 text-white dark:bg-red-700 dark:hover:bg-red-700 rounded-8 font-semibold hover:scale-105 transition hover:bg-red-700 ml-2">
+                                className="btn px-4 btn-sm bg-red-600 border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-red-700 ml-2">
                                 Remove Props <FontAwesomeIcon className="mr-1" icon={faMinus}/>
                             </button>
                             <button
                                 onClick={() => setShowDeleteMultipleConfirmation(true)}
-                                className="btn px-4 btn-sm bg-red-600 border-0 text-white dark:bg-red-700 dark:hover:bg-red-700 rounded-8 font-semibold hover:scale-105 transition hover:bg-red-700 ml-5">
+                                className="btn px-4 btn-sm bg-red-600 border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-red-700 ml-5">
                                 Delete Selected <FontAwesomeIcon className="mr-1" icon={faTrash}/>
                             </button>
                         </div>
@@ -735,7 +735,7 @@ const Contacts: React.FC<ContactsProps> = ({
                             ) : (
                                 <button
                                     onClick={handleAddTags}
-                                    className="btn px-4 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                                    className="btn px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
                                     Add Tags
                                 </button>
                             )}
@@ -770,7 +770,7 @@ const Contacts: React.FC<ContactsProps> = ({
                             ) : (
                                 <button
                                     onClick={handleRemoveTags}
-                                    className="btn px-4 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                                    className="btn px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
                                     Remove Tags
                                 </button>
                             )}

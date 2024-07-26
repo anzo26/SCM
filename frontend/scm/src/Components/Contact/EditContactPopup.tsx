@@ -179,11 +179,11 @@ const EditContactPopup: React.FC<EditContactPopupProps> = ({ contact, tenantUniq
         <div>
             <div className="flex space-x-4">
                 <button onClick={() => setShowPopup(true)}
-                        className="btn mt-2 px-6 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                        className="btn mt-2 px-6 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
                     Edit Contact <FontAwesomeIcon className="ml-1 w-3.5 h-auto" icon={faEdit} />
                 </button>
                 <button onClick={() => setShowConfirmation(true)}
-                        className="btn mt-2 px-6 btn-sm bg-danger border-0 text-white dark:bg-danger dark:hover:bg-danger rounded-8 font-semibold hover:scale-105 transition hover:bg-danger">
+                        className="btn mt-2 px-6 btn-sm bg-danger border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-danger">
                     Delete Contact <FontAwesomeIcon className="ml-1 w-3.5 h-auto" icon={faTrash} />
                 </button>
             </div>
@@ -291,7 +291,7 @@ const EditContactPopup: React.FC<EditContactPopupProps> = ({ contact, tenantUniq
                                     <span className="loading loading-spinner text-primary"></span>
                                 ) : (
                                     <button type="button" onClick={handleUpdate}
-                                            className="btn mt-4 mx-1 px-4 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:bg-primary-light hover:scale-105 transition">
+                                            className="btn mt-4 mx-1 px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:bg-primary-light hover:scale-105 transition">
                                         Save Changes
                                     </button>
                                 )}

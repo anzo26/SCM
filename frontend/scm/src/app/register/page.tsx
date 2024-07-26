@@ -78,10 +78,10 @@ const Register = () => {
                 <div className={"flex flex-col items-center justify-center rounded-8 p-10"}>
                     <Image width={700} height={700} className={"w-48 h-auto rounded-8"} src={"/logo-scm.png"}
                            alt={"Logo"}/>
-                    <h3 className={"text-xl font-semibold mb-5 dark:text-white dark:pt-6"}>Register for new Account</h3>
+                    <h3 className={"text-xl font-semibold mb-5"}>Register for new Account</h3>
                     <form onSubmit={handleRegister} className={"flex flex-col items-center justify-center"}>
                         <label
-                            className="input input-bordered flex items-center gap-2 mb-2 text-secondary-dark dark:bg-white">
+                            className="input input-bordered flex items-center gap-2 mb-2 text-secondary-dark">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
                                  className="w-4 h-4 opacity-70">
                                 <path
@@ -97,7 +97,7 @@ const Register = () => {
                             />
                         </label>
                         <label
-                            className="input input-bordered flex items-center gap-2 mb-2 text-secondary-dark dark:bg-white">
+                            className="input input-bordered flex items-center gap-2 mb-2 text-secondary-dark">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
                                  className="w-4 h-4 opacity-70">
                                 <path fillRule="evenodd"
@@ -112,7 +112,7 @@ const Register = () => {
                             />
                         </label>
                         <label
-                            className="input input-bordered flex items-center gap-2 mb-2 text-secondary-dark dark:bg-white">
+                            className="input input-bordered flex items-center gap-2 mb-2 text-secondary-dark">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
                                  className="w-4 h-4 opacity-70">
                                 <path fillRule="evenodd"
@@ -135,10 +135,10 @@ const Register = () => {
                             <p className={"text-xs text-error"}>Passwords do not match!</p>
                         )}
                         <button type="submit"
-                                className={"btn px-4 mt-4 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark"}>Register
+                                className={"btn px-4 mt-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark"}>Register
                         </button>
                     </form>
-                    <Link href={"/login"} className={"mt-5 link text-primary-light dark:text-white text-xs"}>Already
+                    <Link href={"/login"} className={"mt-5 link text-primary-light text-xs"}>Already
                         have an
                         account?
                         Log in here!</Link>

@@ -111,7 +111,7 @@ const SavedSearchesPopup: React.FC<SavedSearchesPopupProps> = (props) => {
     return (
         <div>
             <button onClick={() => setShowPopup(true)}
-                    className={`btn px-4 btn-sm ${props.action === "delete" ? "bg-danger hover:bg-danger dark:bg-danger dark:hover:bg-danger" : "bg-primary-light hover:bg-primary-light dark:bg-primary-dark dark:hover:bg-primary-dark"} border-0 text-white rounded-8 font-semibold hover:scale-105 transition ml-3`}
+                    className={`btn px-4 btn-sm ${props.action === "delete" ? "bg-danger hover:bg-danger" : "bg-primary-light hover:bg-primary-light"} border-0 text-white rounded-8 font-semibold hover:scale-105 transition ml-3`}
             >
                 <FontAwesomeIcon className={"w-3.5 h-auto"} icon={props.icon}/>
             </button>
@@ -220,7 +220,7 @@ const SavedSearchesPopup: React.FC<SavedSearchesPopupProps> = (props) => {
                                         <span className="loading loading-spinner text-primary"></span>
                                     ) : (
                                         <button onClick={() => handleEdit(savedSearch, props.IdToken)}
-                                                className="btn mt-4 mx-1 px-4 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:bg-primary-light hover:scale-105 transition">
+                                                className="btn mt-4 mx-1 px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:bg-primary-light hover:scale-105 transition">
                                             Save changes
                                         </button>
                                     )}

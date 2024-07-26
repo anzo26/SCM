@@ -50,10 +50,10 @@ const Login = () => {
                 <div className={"flex flex-col items-center justify-center rounded-8 p-10"}>
                     <Image width={700} height={700} className={"w-48 h-auto rounded-8"} src={"/logo-scm.png"}
                            alt={"Logo"}/>
-                    <h3 className={"text-xl font-semibold mb-5 dark:text-white dark:pt-6"}>Log in with Email</h3>
+                    <h3 className={"text-xl font-semibold mb-5"}>Log in with Email</h3>
                     <form onSubmit={handleLogin} className={"flex flex-col items-center justify-center"}>
                         <label
-                            className="input input-bordered flex items-center gap-2 mb-2 text-secondary-dark dark:bg-white">
+                            className="input input-bordered flex items-center gap-2 mb-2 text-secondary-dark">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
                                  className="w-4 h-4 opacity-70">
                                 <path
@@ -84,11 +84,11 @@ const Login = () => {
                             />
                         </label>
                         <button type="submit"
-                                className={"btn mt-4 px-4 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark"}>Log
+                                className={"btn mt-4 px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark"}>Log
                             in
                         </button>
                     </form>
-                    <Link href={"/register"} className={"mt-5 link text-primary-light dark:text-white text-xs"}>Do not
+                    <Link href={"/register"} className={"mt-5 link text-primary-light text-xs"}>Do not
                         have an account?
                         Register here!</Link>
                 </div>

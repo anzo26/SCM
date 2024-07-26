@@ -88,7 +88,7 @@ const AddSavedSearchPopup: React.FC<AddSavedSearchPopupProps> = (props) => {
     return (
         <div>
             <button onClick={() => setShowPopup(true)}
-                    className="btn mr-3 px-4 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                    className="btn mr-3 px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
                 {props.search?.id ? 'Update Search' : 'Save Search'} <FontAwesomeIcon className={"ml-1 w-3.5 h-auto"}
                                                                                       icon={faFloppyDisk}/>
             </button>
@@ -136,7 +136,7 @@ const AddSavedSearchPopup: React.FC<AddSavedSearchPopupProps> = (props) => {
                             >Close Popup
                             </button>
                             <button onClick={() => handleSave()}
-                                    className="btn  mt-4 mx-1 px-5 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:bg-primary-light hover:scale-105 transition">
+                                    className="btn  mt-4 mx-1 px-5 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:bg-primary-light hover:scale-105 transition">
                                 {props.search?.id ? 'Update Search' : 'Save Search'}
                             </button>
                         </div>

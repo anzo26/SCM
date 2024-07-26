@@ -71,7 +71,7 @@ const ContactExportPopup: React.FC<ContactExportPopupProps> = (props) => {
     return (
         <div>
         <button  onClick={() => setShowPopup(true)} type="button"
-                className="btn px-4 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                className="btn px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
             Export
             <FontAwesomeIcon className="ml-1 w-3.5 h-auto" icon={faDownload}/>
         </button>
@@ -89,7 +89,7 @@ const ContactExportPopup: React.FC<ContactExportPopupProps> = (props) => {
                                 <span className="loading loading-spinner text-primary"></span>
                             ) : (
                                 <button type="button" onClick={handleExport}
-                                        className="btn mt-4 mx-1 px-5 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:bg-primary-light hover:scale-105 transition">
+                                        className="btn mt-4 mx-1 px-5 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:bg-primary-light hover:scale-105 transition">
                                     Export Contacts
                                 </button>
                             )}

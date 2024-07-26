@@ -216,7 +216,7 @@ const AddNewContactPopup: React.FC<AddNewContactPopupProps> = ({ tenantUniqueNam
     return (
         <div>
             <button onClick={openPopup}
-                    className="btn px-4 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                    className="btn px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
                 Contact
                 <FontAwesomeIcon className="ml-1 w-3.5 h-auto" icon={faPlus}/>
             </button>
@@ -313,7 +313,7 @@ const AddNewContactPopup: React.FC<AddNewContactPopupProps> = ({ tenantUniqueNam
                                     <span className="loading loading-spinner text-primary"></span>
                                 ) : (
                                     <button type="button" onClick={handleSave}
-                                            className="mt-4 mx-1 px-4 py-1 bg-primary-light text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:bg-primary-light hover:scale-105 transition">
+                                            className="mt-4 mx-1 px-4 py-1 bg-primary-light text-white rounded-8 font-semibold hover:bg-primary-light hover:scale-105 transition">
                                         Add Contact
                                     </button>
                                 )}

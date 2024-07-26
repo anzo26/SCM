@@ -37,7 +37,7 @@ const Navbar = () => {
     }
 
     return (
-        <div className={"bg-primary-light flex justify-between text-white dark:bg-primary-dark"}>
+        <div className={"bg-primary-light flex justify-between text-white"}>
             <div className={"flex"}>
                 <Link href={"/"}>
                         <Image width={700} height={700} className={"w-150px"} src={"/logo-scm.png"} alt={"Logo"}/>
@@ -66,13 +66,13 @@ const Navbar = () => {
                 {user && (
                     <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button"
-                             className="btn bg-primary-light dark:bg-primary-dark text-white border-none m-1 shadow-none hover:bg-primary-dark hover:scale-105 transition hover:shadow dark:hover:bg-primary-light">
+                             className="btn bg-primary-light text-white border-none m-1 shadow-none hover:bg-primary-dark hover:scale-105 transition hover:shadow">
                             <span className={"p-2 font-medium"}>{user.email}</span>
                             <FontAwesomeIcon className={`ml-1 w-5 h-auto p-2`} icon={faCircleUser} />
                         </div>
                         <ul tabIndex={0}
-                            className="dropdown-content z-[1] menu p-2 shadow-none rounded-8 w-52 bg-primary-light dark:bg-primary-dark">
-                            <li className={"px-3 py-2 mx-2 rounded-8 hover:bg-primary-dark dark:hover:bg-primary-light hover:scale-105 transition hover:cursor-pointer"} onClick={handleLogout}>
+                            className="dropdown-content z-[1] menu p-2 shadow-none rounded-8 w-52 bg-primary-light">
+                            <li className={"px-3 py-2 mx-2 rounded-8 hover:bg-primary-dark hover:scale-105 transition hover:cursor-pointer"} onClick={handleLogout}>
                                 <span>Logout</span>
                             </li>
                         </ul>

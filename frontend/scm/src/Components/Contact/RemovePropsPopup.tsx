@@ -85,7 +85,7 @@ const RemovePropsPopup: React.FC<RemovePropsPopupProps> = ({
                     ) : (
                         <button
                             onClick={handleSave}
-                            className="btn px-4 btn-sm bg-primary-light border-0 text-white dark:bg-primary-dark dark:hover:bg-primary-dark rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                            className="btn px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
                             Remove Property
                         </button>
                     )}
