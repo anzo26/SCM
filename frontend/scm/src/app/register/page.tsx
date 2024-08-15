@@ -135,10 +135,10 @@ const Register = () => {
                             <p className={"text-xs text-error"}>Passwords do not match!</p>
                         )}
                         <button type="submit"
-                                className={"btn px-4 mt-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark"}>Register
+                                className={"btn px-4 mt-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary"}>Register
                         </button>
                     </form>
-                    <Link href={"/login"} className={"mt-5 link text-primary-light text-xs"}>Already
+                    <Link href={"/login"} className={"mt-5 link text-primary text-xs"}>Already
                         have an
                         account?
                         Log in here!</Link>

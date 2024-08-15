@@ -224,7 +224,7 @@ const SearchContacts: React.FC<SearchContactsProps> = (props) => {
                 />
                 {showAsc ? (
                     <div>
-                        <button className={"bg-primary-light rounded-l-8 text-white px-4 py-1 items-center"}>
+                        <button className={"bg-primary rounded-l-8 text-white px-4 py-1 items-center"}>
                             <FontAwesomeIcon className={"ml-1 w-3.5 h-auto"} icon={faArrowUp}/>
                         </button>
                         <button className={"border rounded-r-8 px-4 py-1 mr-3 items-center"}
@@ -238,13 +238,13 @@ const SearchContacts: React.FC<SearchContactsProps> = (props) => {
                                 onClick={() => handleSort(true)}>
                             <FontAwesomeIcon className={"ml-1 w-3.5 h-auto"} icon={faArrowUp}/>
                         </button>
-                        <button className={"bg-primary-light text-white rounded-r-8 px-4 py-1 mr-3 items-center"}>
+                        <button className={"bg-primary text-white rounded-r-8 px-4 py-1 mr-3 items-center"}>
                             <FontAwesomeIcon className={"ml-1 w-3.5 h-auto"} icon={faArrowDown}/>
                         </button>
                     </div>
                 )}
                 <button onClick={toggleViewMode}
-                        className="btn mr-3 px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                        className="btn mr-3 px-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary">
                     {viewMode === 'grid' ? (
                         <FontAwesomeIcon className="ml-1 w-3.5 h-auto" icon={faList}/>
                     ) : (
@@ -260,7 +260,7 @@ const SearchContacts: React.FC<SearchContactsProps> = (props) => {
                     <>
                         <button
                             onClick={() => handleReset()}
-                            className="text-primary-light hover:text-primary-dark transition">
+                            className="text-primary hover:text-primary-dark transition">
                             reset search <FontAwesomeIcon className={"ml-1 w-3.5 h-auto"} icon={faRotateLeft}/>
                         </button>
                     </>

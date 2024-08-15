@@ -179,7 +179,7 @@ const EditContactPopup: React.FC<EditContactPopupProps> = ({ contact, tenantUniq
         <div>
             <div className="flex space-x-4">
                 <button onClick={() => setShowPopup(true)}
-                        className="btn mt-2 px-6 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                        className="btn mt-2 px-6 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary">
                     Edit Contact <FontAwesomeIcon className="ml-1 w-3.5 h-auto" icon={faEdit} />
                 </button>
                 <button onClick={() => setShowConfirmation(true)}
@@ -278,7 +278,7 @@ const EditContactPopup: React.FC<EditContactPopupProps> = ({ contact, tenantUniq
                                     </div>
                                 ))}
                                 <button type="button" onClick={addNewPropsField}
-                                        className="mt-2 px-4 py-1 border-1px text-primary-light border-primary-light rounded-8 font-normal hover:scale-105 transition">
+                                        className="mt-2 px-4 py-1 border-1px text-primary border-primary rounded-8 font-normal hover:scale-105 transition">
                                     Add Property
                                 </button>
                             </div>
@@ -291,7 +291,7 @@ const EditContactPopup: React.FC<EditContactPopupProps> = ({ contact, tenantUniq
                                     <span className="loading loading-spinner text-primary"></span>
                                 ) : (
                                     <button type="button" onClick={handleUpdate}
-                                            className="btn mt-4 mx-1 px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:bg-primary-light hover:scale-105 transition">
+                                            className="btn mt-4 mx-1 px-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:bg-primary hover:scale-105 transition">
                                         Save Changes
                                     </button>
                                 )}

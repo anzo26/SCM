@@ -37,7 +37,7 @@ const Navbar = () => {
     }
 
     return (
-        <div className={"bg-primary-light flex justify-between text-white"}>
+        <div className={"bg-primary flex justify-between text-white"}>
             <div className={"flex"}>
                 <Link href={"/"}>
                         <Image width={700} height={700} className={"w-150px"} src={"/logo-scm.png"} alt={"Logo"}/>
@@ -45,13 +45,13 @@ const Navbar = () => {
                 <div className={"items-center justify-center flex"}>
                     <nav className={"navbar"}>
                         <ul>
-                            <li className={`m-2 p-3 rounded-8 hover:bg-primary-dark hover:scale-105 transition hover:shadow dark:hover:bg-primary-light ${pathname === '/' ? 'scale-105 transition bg-primary-dark' : ''}`}>
+                            <li className={`m-2 p-3 rounded-8 hover:bg-primary hover:scale-105 transition hover:shadow dark:hover:bg-primary ${pathname === '/' ? 'scale-105 transition bg-primary' : ''}`}>
                                 <Link href={"/"}>
                                     <span className={"mr-2 font-semibold"}>Home</span>
                                     <FontAwesomeIcon className={"w-5 h-auto ml-1 "} icon={faUsersRectangle}/>
                                 </Link>
                             </li>
-                            <li className={`m-2 p-3 rounded-8 hover:bg-primary-dark hover:scale-105 transition hover:shadow dark:hover:bg-primary-light ${pathname === '/saved-searches' ? 'scale-105 transition bg-primary-dark' : ''}`}>
+                            <li className={`m-2 p-3 rounded-8 hover:bg-primary hover:scale-105 transition hover:shadow dark:hover:bg-primary ${pathname === '/saved-searches' ? 'scale-105 transition bg-primary' : ''}`}>
                             <Link href={"/saved-searches"}>
                                     <span className={"mr-2 font-semibold"}>Saved Searches</span>
                                     <FontAwesomeIcon className={"w-5 h-auto ml-1"} icon={faMagnifyingGlass} />
@@ -66,13 +66,13 @@ const Navbar = () => {
                 {user && (
                     <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button"
-                             className="btn bg-primary-light text-white border-none m-1 shadow-none hover:bg-primary-dark hover:scale-105 transition hover:shadow">
+                             className="btn bg-primary text-white border-none m-1 shadow-none hover:bg-primary hover:scale-105 transition hover:shadow">
                             <span className={"p-2 font-medium"}>{user.email}</span>
                             <FontAwesomeIcon className={`ml-1 w-5 h-auto p-2`} icon={faCircleUser} />
                         </div>
                         <ul tabIndex={0}
-                            className="dropdown-content z-[1] menu p-2 shadow-none rounded-8 w-52 bg-primary-light">
-                            <li className={"px-3 py-2 mx-2 rounded-8 hover:bg-primary-dark hover:scale-105 transition hover:cursor-pointer"} onClick={handleLogout}>
+                            className="dropdown-content z-[1] menu p-2 shadow-none rounded-8 w-52 bg-primary">
+                            <li className={"px-3 py-2 mx-2 rounded-8 hover:bg-primary hover:scale-105 transition hover:cursor-pointer"} onClick={handleLogout}>
                                 <span>Logout</span>
                             </li>
                         </ul>

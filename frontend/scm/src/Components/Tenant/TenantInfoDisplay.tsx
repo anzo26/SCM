@@ -77,7 +77,7 @@ const TenantInfoDisplay: React.FC<TenantInfoDisplayProps> = (props) => {
                             <div className="flex items-center mb-4">
                                 <FontAwesomeIcon
                                     icon={faArrowLeft}
-                                    className="text-primary-light mr-4 mt-4 cursor-pointer w-3.5 h-auto hover:scale-105 transition"
+                                    className="text-primary mr-4 mt-4 cursor-pointer w-3.5 h-auto hover:scale-105 transition"
                                     onClick={() => {
                                         router.push("/");
                                         router.refresh();
@@ -99,7 +99,7 @@ const TenantInfoDisplay: React.FC<TenantInfoDisplayProps> = (props) => {
                         </div>
                     </div>
                     <div className={"flex items-center"}>
-                        <h2 className="text-3xl font-semibold text-primary-light">{props.tenant.title}</h2>
+                        <h2 className="text-3xl font-semibold text-primary">{props.tenant.title}</h2>
                         <span className="ml-6 mr-2 text-2xl font-semibold ">{props.contactsNumber}</span>
                         <FontAwesomeIcon className="h-5 w-auto mb-0.5 " icon={faUsers} />
                     </div>

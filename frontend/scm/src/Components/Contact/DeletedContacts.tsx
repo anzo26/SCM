@@ -66,7 +66,7 @@ const DeletedContacts: React.FC<DeletedContactsProps> = (props) => {
                     <div className={"flex items-center"}>
                         <FontAwesomeIcon
                             icon={faArrowLeft}
-                            className="text-primary-light mr-4 cursor-pointer w-3.5 h-auto"
+                            className="text-primary mr-4 cursor-pointer w-3.5 h-auto"
                             onClick={() => router.back()}
                         />
                         <div className="text-sm breadcrumbs mx-2">
@@ -81,7 +81,7 @@ const DeletedContacts: React.FC<DeletedContactsProps> = (props) => {
                         </div>
                     </div>
                     <div className={"flex items-center mt-3"}>
-                        <h2 className="text-3xl font-semibold text-primary-light">Deleted contacts
+                        <h2 className="text-3xl font-semibold text-primary">Deleted contacts
                             - {props.tenant.title}</h2>
                     </div>
                     <div className={"flex mt-0 mb-3 items-center"}>

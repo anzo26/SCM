@@ -74,7 +74,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({contact, activityLog, te
             <div className={"container mx-auto flex items-center"}>
                 <FontAwesomeIcon
                     icon={faArrowLeft}
-                    className="text-primary-light mr-4 cursor-pointer w-3.5 h-auto"
+                    className="text-primary mr-4 cursor-pointer w-3.5 h-auto"
                     onClick={() => router.back()}
                 />
                 <div className="text-sm breadcrumbs mx-2">
@@ -133,7 +133,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({contact, activityLog, te
                                             </div>
                                             <a href={`mailto:${contact.props.email}`}
                                                onClick={(e) => e.stopPropagation()}
-                                               className="mt-1 text-primary-light hover:underline">
+                                               className="mt-1 text-primary hover:underline">
                                                 {contact.props.email}
                                             </a>
                                         </div>
@@ -191,7 +191,7 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({contact, activityLog, te
                                     <div className="flex flex-wrap gap-2 mb-4">
                                         {contact.tags.map((tag, index) => (
                                             <span key={index}
-                                                  className="bg-white text-primary text-primary-light border border-primary-light text-sm font-medium px-3 py-1.5 rounded-8">
+                                                  className="bg-white text-primary text-primary border border-primary text-sm font-medium px-3 py-1.5 rounded-8">
                             {tag}</span>
                                         ))}
                                     </div>

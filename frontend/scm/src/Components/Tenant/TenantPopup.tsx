@@ -124,7 +124,7 @@ const TenantPopup: React.FC<TenantAddPopupProps> = (props) => {
     return (
         <div>
             <button onClick={() => setShowPopup(true)}
-                    className="btn px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                    className="btn px-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary">
                     {props.buttonAction} <FontAwesomeIcon className={"ml-1 w-3.5 h-auto"} icon={props.icon}/>
             </button>
 
@@ -186,7 +186,7 @@ const TenantPopup: React.FC<TenantAddPopupProps> = (props) => {
                                 <span className="loading loading-spinner text-primary"></span>
                             ) : (
                                 <button onClick={() => handleSave()}
-                                        className="btn mt-4 mx-1 px-5 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:bg-primary-light hover:scale-105 transition">
+                                        className="btn mt-4 mx-1 px-5 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:bg-primary hover:scale-105 transition">
                                     Add Tenant
                                 </button>
                             )}

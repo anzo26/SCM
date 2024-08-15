@@ -349,7 +349,7 @@ const Contacts: React.FC<ContactsProps> = ({
                         <div>
                             <button
                                 onClick={() => setShowTagConfirmation(true)}
-                                className="btn px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                                className="btn px-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary">
                                 Add Tags <FontAwesomeIcon className="mr-1" icon={faTags}/>
                             </button>
                             <button
@@ -359,7 +359,7 @@ const Contacts: React.FC<ContactsProps> = ({
                             </button>
                             <button
                                 onClick={handleAddProps}
-                                className="btn px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark ml-2">
+                                className="btn px-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary ml-2">
                                 Add Prop <FontAwesomeIcon className="mr-1" icon={faPlus}/>
                             </button>
                             <button
@@ -389,7 +389,7 @@ const Contacts: React.FC<ContactsProps> = ({
                             type="checkbox"
                             checked={selectAll}
                             onChange={handleSelectAll}
-                            className="form-checkbox h-5 w-5 text-primary-light transition duration-150 ease-in-out rounded-8"
+                            className="form-checkbox h-5 w-5 text-primary transition duration-150 ease-in-out rounded-8"
                         />
                         <span className="ml-2 text-xl">Select all</span>
                     </div>
@@ -409,7 +409,7 @@ const Contacts: React.FC<ContactsProps> = ({
                                             onChange={(e) => {
                                                 handleSelectContact(contact.id);
                                             }}
-                                            className="form-checkbox h-7 w-7 text-primary-light transition duration-150 ease-in-out rounded-8"
+                                            className="form-checkbox h-7 w-7 text-primary transition duration-150 ease-in-out rounded-8"
                                         />
                                     </div>
                                     <div className="flex items-center">
@@ -418,7 +418,7 @@ const Contacts: React.FC<ContactsProps> = ({
                                                 e.stopPropagation();
                                                 handleDuplicateContact(contact);
                                             }}
-                                            className="text-primary-light hover:text-primary-dark transition mr-4">
+                                            className="text-primary hover:text-primary-dark transition mr-4">
                                             <FontAwesomeIcon icon={faCopy} className="mr-2 w-5 h-5"/>
                                         </button>
                                         <button
@@ -443,7 +443,7 @@ const Contacts: React.FC<ContactsProps> = ({
                                     {contact.props.email && tenant.displayProps.includes('email') && (
                                         <a href={`mailto:${contact.props.email}`}
                                            onClick={(e) => e.stopPropagation()}
-                                           className="block mb-1.5 text-primary-light hover:underline">
+                                           className="block mb-1.5 text-primary hover:underline">
                                             {contact.props.email}
                                         </a>
                                     )}
@@ -463,7 +463,7 @@ const Contacts: React.FC<ContactsProps> = ({
                                     <div className="mt-auto flex justify-center flex-wrap gap-2">
                                         {contact.tags && contact.tags.slice(0, showAllTags === contact.id ? contact.tags.length : 3).map((tag, index) => (
                                             <span key={index}
-                                                  className="bg-white text-primary-light border border-primary-light text-sm font-medium px-3 py-1.5 rounded-8">
+                                                  className="bg-white text-primary border border-primary text-sm font-medium px-3 py-1.5 rounded-8">
                                 {tag}
                             </span>
                                         ))}
@@ -473,7 +473,7 @@ const Contacts: React.FC<ContactsProps> = ({
                                                     e.stopPropagation();
                                                     setShowAllTags(showAllTags === contact.id ? null : contact.id);
                                                 }}
-                                                className="text-primary-light text-sm font-medium px-2 py-1 rounded-8 mt-1">
+                                                className="text-primary text-sm font-medium px-2 py-1 rounded-8 mt-1">
                                                 {showAllTags === contact.id ? 'Show less' : `+${contact.tags.length - 3} more`}
                                             </button>
                                         )}
@@ -494,7 +494,7 @@ const Contacts: React.FC<ContactsProps> = ({
                                                 type="checkbox"
                                                 checked={selectAll}
                                                 onChange={handleSelectAll}
-                                                className="form-checkbox h-4 w-4 hover:scale-105 text-primary-light transition duration-150 ease-in-out"
+                                                className="form-checkbox h-4 w-4 hover:scale-105 text-primary transition duration-150 ease-in-out"
                                             />
                                         </div>
                                     </th>
@@ -520,7 +520,7 @@ const Contacts: React.FC<ContactsProps> = ({
                                             type="checkbox"
                                             checked={selectedContacts.includes(contact.id)}
                                             onChange={() => handleSelectContact(contact.id)}
-                                            className="form-checkbox h-4 w-4 hover:scale-105 text-primary-light transition duration-150 ease-in-out"
+                                            className="form-checkbox h-4 w-4 hover:scale-105 text-primary transition duration-150 ease-in-out"
                                         />
                                     </td> )}
                                     <td className={"px-2 py-3 whitespace-no-wrap "}>
@@ -533,7 +533,7 @@ const Contacts: React.FC<ContactsProps> = ({
                                         <td key={prop} className="px-2 py-3 whitespace-no-wrap ">
                                             <div className="text-sm leading-4 text-gray-800">
                                                 {prop === 'email' ? (
-                                                    <a href={`mailto:${contact.props[prop]}`} className="text-primary-light hover:underline">
+                                                    <a href={`mailto:${contact.props[prop]}`} className="text-primary hover:underline">
                                                         {contact.props[prop]}
                                                     </a>
                                                 ) : (
@@ -547,14 +547,14 @@ const Contacts: React.FC<ContactsProps> = ({
                                     <div className="flex flex-wrap gap-1">
                                         {contact.tags && contact.tags.slice(0, showAllTags === contact.id ? contact.tags.length : 3).map((tag, index) => (
                                             <span key={index}
-                                                  className="bg-white text-primary-light border border-primary-light text-xs font-medium px-2 py-1 rounded-8">
+                                                  className="bg-white text-primary border border-primary text-xs font-medium px-2 py-1 rounded-8">
                                     {tag}
                                 </span>
                                         ))}
                                         {contact.tags && contact.tags.length > 3 && (
                                             <button
                                                 onClick={() => setShowAllTags(showAllTags === contact.id ? null : contact.id)}
-                                                className="text-primary-light text-xs font-medium px-2 py-1 rounded-8 mt-1">
+                                                className="text-primary text-xs font-medium px-2 py-1 rounded-8 mt-1">
                                                 {showAllTags === contact.id ? 'Show less' : `+${contact.tags.length - 3} more`}
                                             </button>
                                         )}
@@ -564,12 +564,12 @@ const Contacts: React.FC<ContactsProps> = ({
                                         <td className="px-2 py-4 whitespace-no-wrap text-right flex items-center">
                                             <button
                                                 onClick={() => handleViewDetails(contact.id, contact.tenantUniqueName)}
-                                                className="text-primary-light hover:text-primary-dark transition relative group">
+                                                className="text-primary hover:text-primary-dark transition relative group">
                                                 <FontAwesomeIcon icon={faInfo} className="mr-2"/>
                                             </button>
                                             <button
                                                 onClick={() => handleDuplicateContact(contact)}
-                                                className="text-primary-light hover:text-primary-dark transition ml-4">
+                                                className="text-primary hover:text-primary-dark transition ml-4">
                                                 <FontAwesomeIcon icon={faCopy} className="mr-2"/>
                                             </button>
                                             <button
@@ -700,7 +700,7 @@ const Contacts: React.FC<ContactsProps> = ({
                             ) : (
                                 <button
                                     onClick={() => handleRevert(revertContact!)}
-                                    className="px-4 py-1 font-semibold bg-primary-light hover:scale-105 transition rounded-8 text-white">
+                                    className="px-4 py-1 font-semibold bg-primary hover:scale-105 transition rounded-8 text-white">
                                     Revert
                                 </button>
                             )}
@@ -735,7 +735,7 @@ const Contacts: React.FC<ContactsProps> = ({
                             ) : (
                                 <button
                                     onClick={handleAddTags}
-                                    className="btn px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                                    className="btn px-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary">
                                     Add Tags
                                 </button>
                             )}
@@ -770,7 +770,7 @@ const Contacts: React.FC<ContactsProps> = ({
                             ) : (
                                 <button
                                     onClick={handleRemoveTags}
-                                    className="btn px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                                    className="btn px-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary">
                                     Remove Tags
                                 </button>
                             )}

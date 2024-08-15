@@ -117,7 +117,7 @@ const TenantSettingsPopup: React.FC<TenantSettingsPopupProps> = ({ tenant, IdTok
     return (
         <div>
             <button type="button" onClick={() => setShowPopup(true)}
-                    className="btn px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark">
+                    className="btn px-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary">
                 Tenant Settings
                 <FontAwesomeIcon className={"ml-1 w-3.5 h-auto"} icon={faGear}/>
             </button>
@@ -185,7 +185,7 @@ const TenantSettingsPopup: React.FC<TenantSettingsPopupProps> = ({ tenant, IdTok
                                     <span className="loading loading-spinner text-primary"></span>
                                 ) : (
                                     <button type="button" onClick={handleSave}
-                                            className="mt-4 mx-1 px-4 py-1 bg-primary-light text-white rounded-8 font-semibold hover:bg-primary-light hover:scale-105 transition">
+                                            className="mt-4 mx-1 px-4 py-1 bg-primary text-white rounded-8 font-semibold hover:bg-primary hover:scale-105 transition">
                                         Save Settings
                                     </button>
                                 )}

@@ -68,7 +68,7 @@ const ImportContacts: React.FC<ImportContactsProps> = ({ tenantUniqueName, IdTok
     return (
         <div>
             <button onClick={openPopup}
-                    className="btn px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark ml-3">
+                    className="btn px-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary ml-3">
                 Import
                 <FontAwesomeIcon className="ml-1 w-3.5 h-auto" icon={faUpload} />
             </button>
@@ -122,7 +122,7 @@ const ImportContacts: React.FC<ImportContactsProps> = ({ tenantUniqueName, IdTok
                                     <span className="loading loading-spinner text-primary"></span>
                                 ) : (
                                     <button type="button" onClick={handleImport}
-                                            className="mt-4 mx-1 px-4 py-1 bg-primary-light text-white rounded-8 font-semibold hover:bg-primary-light hover:scale-105 transition">
+                                            className="mt-4 mx-1 px-4 py-1 bg-primary text-white rounded-8 font-semibold hover:bg-primary hover:scale-105 transition">
                                         Import Contacts
                                     </button>
                                 )}

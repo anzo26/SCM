@@ -53,7 +53,7 @@ const Login = () => {
                     <h3 className={"text-xl font-semibold mb-5"}>Log in with Email</h3>
                     <form onSubmit={handleLogin} className={"flex flex-col items-center justify-center"}>
                         <label
-                            className="input input-bordered flex items-center gap-2 mb-2 text-secondary-dark">
+                            className="input input-bordered flex items-center gap-2 mb-2 text-secondary-light">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
                                  className="w-4 h-4 opacity-70">
                                 <path
@@ -69,7 +69,7 @@ const Login = () => {
                             />
                         </label>
                         <label
-                            className="input input-bordered flex items-center gap-2 mb-4 text-secondary-dark dark:bg-white">
+                            className="input input-bordered flex items-center gap-2 mb-4 text-secondary-light light:bg-white">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
                                  className="w-4 h-4 opacity-70">
                                 <path fillRule="evenodd"
@@ -84,11 +84,11 @@ const Login = () => {
                             />
                         </label>
                         <button type="submit"
-                                className={"btn mt-4 px-4 btn-sm bg-primary-light border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary-dark"}>Log
+                                className={"btn mt-4 px-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary"}>Log
                             in
                         </button>
                     </form>
-                    <Link href={"/register"} className={"mt-5 link text-primary-light text-xs"}>Do not
+                    <Link href={"/register"} className={"mt-5 link text-primary text-xs"}>Do not
                         have an account?
                         Register here!</Link>
                 </div>
