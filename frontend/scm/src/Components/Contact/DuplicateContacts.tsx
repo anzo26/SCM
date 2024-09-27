@@ -3,10 +3,20 @@
 import React, { useEffect, useState } from 'react';
 import { Contact as ContactModel } from '@/models/Contact';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faMinus, faTag, faClock, faCommentDots } from "@fortawesome/free-solid-svg-icons";
+import {
+    faPlus,
+    faMinus,
+    faTag,
+    faClock,
+    faCommentDots,
+    faArrowLeft,
+    faHouse,
+    faAddressBook, faTrash, faCodeMerge
+} from "@fortawesome/free-solid-svg-icons";
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { Tenant as TenantModel } from '@/models/Tenant';
+import Link from "next/link";
 
 type DuplicateContactsProps = {
     IdToken: string;
@@ -176,24 +186,44 @@ const DuplicateContacts: React.FC<DuplicateContactsProps> = ({ IdToken, tenantUn
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <h2 className="text-3xl font-semibold mb-4">Duplicated Contacts</h2>
-            {loading ? (
-                <p>Loading duplicated contacts...</p>
-            ) : Object.keys(duplicateContacts).length === 0 ? (
-                <p>There are no duplicated contacts.</p>
-            ) : (
-                <table className="min-w-full bg-white border border-gray-200">
-                    <tbody>
-                    {Object.keys(duplicateContacts).map((title) => (
-                        <React.Fragment key={title}>
-                            <tr>
-                                <td className="py-2 px-4 border-b text-center">{title}</td>
-                                <td className="py-2 px-4 border-b text-right">
-                                    <button
-                                        className="btn px-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary"
-                                        onClick={() => toggleRow(title)}
-                                    >
+        <>
+        <div className={"flex items-center"}>
+            <FontAwesomeIcon
+                icon={faArrowLeft}
+                className="text-primary mr-4 cursor-pointer w-3.5 h-auto"
+                onClick={() => router.back()}
+            />
+            <div className="text-sm breadcrumbs mx-2">
+                <ul className={"text-gray-500"}>
+                    <li><Link
+                        href={"/"}><FontAwesomeIcon icon={faHouse} className={"mr-1"}/>Home</Link></li>
+                    <li><Link
+                        href={`/contacts/${tenantUniqueName}`}><FontAwesomeIcon icon={faAddressBook}
+                                                                                             className={"mr-1"}/>{tenant?.title}
+                    </Link></li>
+                    <li><Link
+                        href={"#"}><FontAwesomeIcon icon={faCodeMerge} className={"mr-1"}/>Duplicated contacts</Link></li>
+                </ul>
+            </div>
+        </div>
+    <div className="container mx-auto p-4">
+        <h2 className="text-3xl text-primary font-semibold mb-4">Duplicated Contacts</h2>
+        {loading ? (
+            <p>Loading duplicated contacts...</p>
+        ) : Object.keys(duplicateContacts).length === 0 ? (
+            <p>There are no duplicated contacts.</p>
+        ) : (
+            <table className="min-w-full bg-white border border-gray-200">
+                <tbody>
+                {Object.keys(duplicateContacts).map((title) => (
+                    <React.Fragment key={title}>
+                        <tr>
+                            <td className="py-2 px-4 border-b text-center">{title}</td>
+                            <td className="py-2 px-4 border-b text-right">
+                                <button
+                                    className="btn px-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary"
+                                    onClick={() => toggleRow(title)}
+                                >
                                         {expandedRows.includes(title) ? (
                                             <>
                                                 <span className="mr-2">Show less</span>
@@ -335,14 +365,6 @@ const DuplicateContacts: React.FC<DuplicateContactsProps> = ({ IdToken, tenantUn
                                     {tag}
                                 </span>
                                         ))}
-                                        {compareTags(mergeDetails.targetContact.tags, mergeDetails.sourceContact.tags).removedTags.map((tag, index) => (
-                                            <span
-                                                key={index}
-                                                className="bg-red-100 text-red-800 border border-red-500 text-sm font-medium px-3 py-1.5 rounded-8"
-                                            >
-                                    {tag}
-                                </span>
-                                        ))}
                                     </div>
                                 </div>
                             )}
@@ -366,6 +388,7 @@ const DuplicateContacts: React.FC<DuplicateContactsProps> = ({ IdToken, tenantUn
                 </div>
             )}
         </div>
+        </>
     );
 };
 

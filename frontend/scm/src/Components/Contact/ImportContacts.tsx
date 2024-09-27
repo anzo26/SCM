@@ -37,7 +37,10 @@ const ImportContacts: React.FC<ImportContactsProps> = ({ tenantUniqueName, IdTok
         setRequestLoading(true);
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contacts/import`, {
+            const isJsonFile = file.name.endsWith('.json');
+            const apiUrl = isJsonFile ? '/contacts/import-json' : '/contacts/import-excel';
+
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${apiUrl}`, {
                 method: 'POST',
                 headers: {
                     'userToken': `Bearer ${IdToken}`,
@@ -47,10 +50,11 @@ const ImportContacts: React.FC<ImportContactsProps> = ({ tenantUniqueName, IdTok
 
             if (!res.ok) {
                 toast.error(res.statusText || 'Failed to import contacts');
+            } else {
+                toast.success('Contacts imported successfully');
             }
 
             if (onClose) onClose();
-            toast.success('Contacts imported successfully');
             setShowPopup(false);
             setRequestLoading(false);
             router.refresh();
@@ -77,8 +81,7 @@ const ImportContacts: React.FC<ImportContactsProps> = ({ tenantUniqueName, IdTok
                 <div className="fixed z-20 flex flex-col justify-center items-center bg-gray-500 bg-opacity-65 inset-0">
                     <div className="bg-white p-10 rounded-8 shadow-lg max-w-3xl w-full my-10 overflow-auto">
                         <h2 className="font-semibold text-2xl">Import Contacts</h2>
-                        <p className="font-light text-md mb-2">Select a file to import contacts. Only .xlsx and .xls
-                            files are supported.</p>
+                        <p className="font-light text-md mb-2">Select a file to import contacts. Supported formats: .xlsx, .xls, .json</p>
                         <p className="font-light text-sm mb-2">File should follow this structure and rules:</p>
                         <ul className="list-disc list-inside text-gray-700 text-sm mb-10">
                             <li className="mb-2">This columns are optional, but they are presets for all tenants:
@@ -97,6 +100,7 @@ const ImportContacts: React.FC<ImportContactsProps> = ({ tenantUniqueName, IdTok
                             </li>
                             <li className="mb-2">If the column value <b>is empty it will be ignored</b> and skipped</li>
                         </ul>
+
                         <form>
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="file">
@@ -105,7 +109,7 @@ const ImportContacts: React.FC<ImportContactsProps> = ({ tenantUniqueName, IdTok
                                 <input
                                     type="file"
                                     id="file"
-                                    accept=".xlsx, .xls"
+                                    accept=".xlsx, .xls, .json"
                                     onChange={handleFileChange}
                                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 />

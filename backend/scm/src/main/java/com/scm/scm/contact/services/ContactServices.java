@@ -353,7 +353,6 @@ public class ContactServices {
     }
 
     public void saveAllContacts(List<ContactDTO> contacts) {
-        // Pretvori vsak ContactDTO v Contact in ga shrani v bazo podatkov
         for (ContactDTO contactDTO : contacts) {
             Contact contact = convertToEntity(contactDTO);
             if (contact.getTenantUniqueName().isEmpty()) {
@@ -369,14 +368,11 @@ public class ContactServices {
             contact.setId(contact.generateId(contact.getTitle()));
             contact.setAttributesToString(contact.contactAttributesToString());
 
-            // Shrani kontakt v glavno kolekcijo
             mongoTemplate.save(contact, contact.getTenantUniqueName() + CollectionType.MAIN.getCollectionType());
 
-            // Posodobi oznake in lastnosti najemnika
             tenantServices.addTags(contact.getTenantUniqueName(), contact.getTags());
             tenantServices.addLabels(contact.getTenantUniqueName(), contact.getProps().keySet());
 
-            // Dodaj dogodek ustvarjanja kontakta
             Event event = new Event(contact.getUser(), contact.getId(), EventState.CREATED);
             eventsServices.addEvent(event, contact.getTenantUniqueName());
 
@@ -410,11 +406,20 @@ public class ContactServices {
         potentialDuplicatesByEmail.entrySet().stream()
                 .filter(entry -> entry.getValue().size() > 1)
                 .forEach(entry -> {
-                    String key = entry.getKey();
-                    duplicates.merge(key, entry.getValue().stream().map(this::convertToDTO).collect(Collectors.toList()), (existingValue, newValue) -> {
-                        existingValue.addAll(newValue);
-                        return existingValue;
-                    });
+                    String emailKey = entry.getKey();
+
+                    List<ContactDTO> existingContacts = duplicates.values().stream()
+                            .flatMap(List::stream)
+                            .filter(dto -> entry.getValue().stream()
+                                    .anyMatch(contact -> contact.getProps().get("email").equalsIgnoreCase(dto.getProps().get("email"))))
+                            .collect(Collectors.toList());
+
+                    if (existingContacts.isEmpty()) {
+                        duplicates.merge(emailKey, entry.getValue().stream().map(this::convertToDTO).collect(Collectors.toList()), (existingValue, newValue) -> {
+                            existingValue.addAll(newValue);
+                            return existingValue;
+                        });
+                    }
                 });
 
         return duplicates;

@@ -20,6 +20,20 @@ public class ImportContactExcel {
 
     private final ContactServices contactServices;
 
+    private static final Map<String, String> COLUMN_NAME_MAPPING = Map.ofEntries(
+            Map.entry("predpona", "prefix"),
+            Map.entry("ime", "name"),
+            Map.entry("priimek", "lastname"),
+            Map.entry("podjetje", "company"),
+            Map.entry("ulica", "address"),
+            Map.entry("hišna številka", "houseNumber"),
+            Map.entry("poštna številka", "postNumber"),
+            Map.entry("pošta", "city"),
+            Map.entry("država", "country"),
+            Map.entry("elektronski naslov", "email"),
+            Map.entry("telefonska", "phoneNumber")
+    );
+
     @Autowired
     public ImportContactExcel(ContactServices contactServices) {
         this.contactServices = contactServices;
@@ -30,56 +44,48 @@ public class ImportContactExcel {
             Sheet sheet = workbook.getSheetAt(0);
             List<ContactDTO> contacts = new ArrayList<>();
 
-            // Read header row to identify columns
             Row headerRow = sheet.getRow(0);
             Map<Integer, String> headerMap = new HashMap<>();
             for (Cell cell : headerRow) {
-                headerMap.put(cell.getColumnIndex(), cell.getStringCellValue());
+                String columnName = getMappedColumnName(cell.getStringCellValue());
+                headerMap.put(cell.getColumnIndex(), columnName);
             }
 
-            // Read data rows
             for (Row row : sheet) {
                 if (row.getRowNum() == 0) {
-                    continue; // Skip header row
+                    continue;
                 }
 
                 ContactDTO contact = new ContactDTO();
                 contact.setId(UUID.randomUUID().toString());
 
-
                 String name = "";
                 String lastname = "";
                 String title = "";
-                // Extract title from name and surname
-                try{
+
+                try {
                     name = getCellValueAsString(row.getCell(getColumnIndex(headerMap, "name", false)));
-                } catch (Exception ignored) {
-                }
+                } catch (Exception ignored) {}
 
-                try{
+                try {
                     lastname = getCellValueAsString(row.getCell(getColumnIndex(headerMap, "lastname", false)));
-                } catch (Exception ignored) {
-                }
+                } catch (Exception ignored) {}
 
-                try{
-                    title = getCellValueAsString(row.getCell(getColumnIndex(headerMap, "Title", false)));
-                } catch (Exception ignored) {
-                }
+                try {
+                    title = getCellValueAsString(row.getCell(getColumnIndex(headerMap, "title", false)));
+                } catch (Exception ignored) {}
 
-                if(!title.isEmpty()){
+                if (!title.isEmpty()) {
                     contact.setTitle(title);
+                } else if (!name.isEmpty() && !lastname.isEmpty()) {
+                    contact.setTitle(name + " " + lastname);
+                } else if (!name.isEmpty()) {
+                    contact.setTitle(name);
+                } else if (!lastname.isEmpty()) {
+                    contact.setTitle(lastname);
                 } else {
-                    if(!name.isEmpty() && !lastname.isEmpty()){
-                        contact.setTitle(name + " " + lastname);
-                    } else if(!name.isEmpty()){
-                        contact.setTitle(name);
-                    } else if(!lastname.isEmpty()){
-                        contact.setTitle(lastname);
-                    } else {
-                        contact.setTitle("Contact");
-                    }
+                    contact.setTitle("Contact");
                 }
-
 
                 contact.setUser(userToken);
                 contact.setTenantUniqueName(tenantUniqueName);
@@ -94,14 +100,11 @@ public class ImportContactExcel {
                         if (value != null && !value.isEmpty()) {
                             props.put(prop, value);
                         }
-                    } catch (Exception ignored) {
-                    }
+                    } catch (Exception ignored) {}
                 }
 
                 contact.setCreatedAt(LocalDateTime.now().toString());
 
-
-                // Process all other columns
                 for (Map.Entry<Integer, String> entry : headerMap.entrySet()) {
                     String columnName = entry.getValue();
                     if (columnName.equals("name") || columnName.equals("lastname") || predefinedProps.contains(columnName)) {
@@ -112,9 +115,10 @@ public class ImportContactExcel {
                     if (Objects.equals(value, "")) {
                         continue;
                     }
+
                     if (columnName.equalsIgnoreCase(value)) {
-                        tags.add(columnName); // Add as tag if value matches column name
-                    } else if (!value.isEmpty()) {
+                        tags.add(columnName);
+                    } else {
                         props.put(columnName, value);
                     }
                 }
@@ -128,8 +132,8 @@ public class ImportContactExcel {
 
             contactServices.saveAllContacts(contacts);
         } catch (Exception e) {
-            log.severe("Error occurred during import: " + e.getMessage());
-            throw new IOException("Error occurred during import", e);
+            log.severe("Napaka pri uvozu: " + e.getMessage());
+            throw new IOException("Napaka pri uvozu", e);
         }
     }
 
@@ -139,6 +143,10 @@ public class ImportContactExcel {
                 .map(Map.Entry::getKey)
                 .findFirst()
                 .orElse(null);
+    }
+
+    private String getMappedColumnName(String originalColumnName) {
+        return COLUMN_NAME_MAPPING.getOrDefault(originalColumnName.toLowerCase(), originalColumnName);
     }
 
     private String getCellValueAsString(Cell cell) {

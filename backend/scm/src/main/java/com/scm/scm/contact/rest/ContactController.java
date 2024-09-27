@@ -7,6 +7,7 @@ import com.scm.scm.predefinedSearch.dto.PredefinedSearchDTO;
 import com.scm.scm.predefinedSearch.services.PredefinedSearchServices;
 import com.scm.scm.predefinedSearch.vao.PredefinedSearch;
 import com.scm.scm.support.ImportContactExcel;
+import com.scm.scm.support.ImportContactJson;
 import com.scm.scm.support.exceptions.CustomHttpException;
 import com.scm.scm.support.exceptions.ExceptionCause;
 import com.scm.scm.support.exceptions.ExceptionMessage;
@@ -22,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -35,15 +37,17 @@ public class ContactController {
     private final ContactServices contactServices;
     private final ExportContactExcel exportContactExcel;
     private final ImportContactExcel importContactExcel;
+    private final ImportContactJson importContactJson;
     private final UserAccessService userAccessService;
     private final PredefinedSearchServices predefinedSearchServices;
     private final UserVerifyService userVerifyService;
 
     @Autowired
-    public ContactController(ContactServices contactServices, ExportContactExcel exportContactExcel, ImportContactExcel importContactExcel, UserAccessService userAccessService, PredefinedSearchServices predefinedSearchServices, UserVerifyService userVerifyService) {
+    public ContactController(ContactServices contactServices, ExportContactExcel exportContactExcel, ImportContactExcel importContactExcel, ImportContactJson importContactJson, UserAccessService userAccessService, PredefinedSearchServices predefinedSearchServices, UserVerifyService userVerifyService) {
         this.contactServices = contactServices;
         this.exportContactExcel = exportContactExcel;
         this.importContactExcel = importContactExcel;
+        this.importContactJson = importContactJson;
         this.userAccessService = userAccessService;
         this.predefinedSearchServices = predefinedSearchServices;
         this.userVerifyService = userVerifyService;
@@ -193,7 +197,7 @@ public class ContactController {
         }
     }
 
-    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/import-excel", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> importContacts(@RequestParam("file") MultipartFile file, @RequestParam("tenantUniqueName") String tenantUniqueName, @RequestHeader("userToken") String userToken) {
         FirebaseToken decodedToken = userVerifyService.verifyUserToken(userToken.replace("Bearer ", ""));
         String sanitizedUserToken = StringEscapeUtils.escapeHtml4(decodedToken.getEmail());
@@ -211,6 +215,24 @@ public class ContactController {
         }
     }
 
+    @PostMapping("/import-json")
+    public ResponseEntity<?> importContactsFromJson(@RequestParam("file") MultipartFile file,
+                                                    @RequestHeader("userToken") String userToken,
+                                                    @RequestParam("tenantUniqueName") String tenantUniqueName) {
+        try {
+            FirebaseToken decodedToken = userVerifyService.verifyUserToken(userToken.replace("Bearer ", ""));
+            String sanitizedUserToken = StringEscapeUtils.escapeHtml4(decodedToken.getEmail());
+
+            if (file.isEmpty() || sanitizedUserToken == null) {
+                return new ResponseEntity<>("Invalid request", HttpStatus.BAD_REQUEST);
+            }
+            
+            importContactJson.importContactsFromJson(file, sanitizedUserToken, tenantUniqueName);
+            return ResponseEntity.ok("Contacts imported successfully from JSON");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error importing contacts from JSON: " + e.getMessage());
+        }
+    }
 
     @PutMapping(value = "/search/{tenant_unique_name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ContactDTO>> searchContacts(@PathVariable(name = "tenant_unique_name") String tenantUniqueName, @RequestHeader("userToken") String userToken, @RequestBody PredefinedSearchDTO searchDTO) {
