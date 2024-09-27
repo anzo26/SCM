@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -221,5 +222,34 @@ public class ContactController {
         }
         PredefinedSearch search = predefinedSearchServices.convertToEntity(searchDTO);
         return ResponseEntity.ok(contactServices.getContactsBySearch(search));
+    }
+
+    @GetMapping(value = "/duplicates/{tenant_unique_name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, List<ContactDTO>>> getDuplicateContactsByTitleAndEmail(@PathVariable(name = "tenant_unique_name") String tenantUniqueName, @RequestHeader("userToken") String userToken) {
+        FirebaseToken decodedToken = userVerifyService.verifyUserToken(userToken.replace("Bearer ", ""));
+        String sanitizedUserToken = StringEscapeUtils.escapeHtml4(decodedToken.getEmail());
+
+        if (!userAccessService.hasAccessToContact(sanitizedUserToken, tenantUniqueName)) {
+            throw new CustomHttpException(ExceptionMessage.USER_ACCESS_TENANT.getExceptionMessage(), 403, ExceptionCause.USER_ERROR);
+        }
+
+        Map<String, List<ContactDTO>> duplicateContacts = contactServices.findDuplicateContactsByTitleAndEmail(tenantUniqueName);
+
+        return ResponseEntity.ok(duplicateContacts);
+    }
+
+    @PostMapping(value = "/merge", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> mergeContacts(
+            @RequestHeader("userToken") String userToken,
+            @RequestParam("targetContactId") String targetContactId,
+            @RequestParam("sourceContactId") String sourceContactId,
+            @RequestParam("tenantUniqueName") String tenantUniqueName) {
+
+        FirebaseToken decodedToken = userVerifyService.verifyUserToken(userToken.replace("Bearer ", ""));
+        String username = decodedToken.getEmail();
+
+        String result = contactServices.mergeContacts(targetContactId, sourceContactId, tenantUniqueName, username);
+
+        return ResponseEntity.ok(result);
     }
 }

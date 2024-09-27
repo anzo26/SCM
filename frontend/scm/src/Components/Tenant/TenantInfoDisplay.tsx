@@ -7,7 +7,7 @@ import {
     faArrowLeft,
     faPlus,
     faExclamationTriangle,
-    faDumpster, faHouse, faAddressBook
+    faDumpster, faHouse, faAddressBook, faCodeMerge
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import EditTenantPopup from "@/Components/Tenant/EditTenantPopup";
@@ -122,6 +122,10 @@ const TenantInfoDisplay: React.FC<TenantInfoDisplayProps> = (props) => {
                         </Link>
                         <AddNewContactPopup tenantUniqueName={props.tenant.tenantUniqueName} onSave={props.onSave} duplicate={false}/>
                         <ImportContacts tenantUniqueName={props.tenant.tenantUniqueName} IdToken={props.IdToken} />
+                        <Link href={`/contacts/${props.tenant.tenantUniqueName}/merge`} className={"btn px-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary ml-3"}>
+                            Merge Contacts
+                            <FontAwesomeIcon className={"ml-1 w-3 h-auto"} icon={faCodeMerge} />
+                        </Link>
                     </div>
                 </div>
             </div>

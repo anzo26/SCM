@@ -1,16 +1,17 @@
 import React from 'react';
-import { EventState } from "@/models/Event";
-import { Event } from "@/models/Event";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {Event, EventState} from "@/models/Event";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
+    faCalendarAlt,
     faCircle,
-    faTag,
+    faClock,
+    faCopy,
+    faMinus,
     faPen,
     faPlus,
-    faMinus,
-    faCalendarAlt,
-    faClock,
-    faTrash, faRotateLeft, faCopy
+    faRotateLeft,
+    faTag,
+    faTrash
 } from "@fortawesome/free-solid-svg-icons";
 
 interface EventDisplayProps {
@@ -49,12 +50,18 @@ const EventDisplay: React.FC<EventDisplayProps> = ({ event }) => {
         switch (event.eventState) {
             case EventState.UPDATED:
                 return `UPDATED "${event.propKey}" from "${event.prevState}" to "${event.currentState}"`;
+            case EventState.MERGE_UPDATED:
+                return `UPDATED "${event.propKey}" from "${event.prevState}" to "${event.currentState}" FROM MERGING`;
             case EventState.TAG_ADD:
                 return `ADDED TAG "${event.currentState}"`;
+            case EventState.MERGE_TAG_ADD:
+                return `ADDED TAG "${event.currentState}" FROM MERGING`;
             case EventState.TAG_REMOVED:
                 return `REMOVED TAG "${event.prevState}"`;
             case EventState.PROP_ADD:
                 return `ADDED ATTRIBUTE "${event.propKey}" and set it to "${event.currentState}"`;
+            case EventState.MERGE_PROP_ADD:
+                return `ADDED ATTRIBUTE "${event.propKey}" and set it to "${event.currentState}" FROM MERGING`;
             case EventState.PROP_REMOVED:
                 return `REMOVED ATTRIBUTE "${event.propKey}" with value "${event.prevState}"`;
             case EventState.DELETED:

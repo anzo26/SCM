@@ -8,6 +8,9 @@ export enum EventState {
     PROP_REMOVED = 'PROP_REMOVED',
     REVERTED = 'REVERTED',
     DUPLICATED = 'DUPLICATED',
+    MERGE_TAG_ADD = 'MERGE_TAG_ADD',
+    MERGE_PROP_ADD = 'MERGE_PROP_ADD',
+    MERGE_UPDATED = 'MERGE_UPDATED'
 }
 
 export interface Event {

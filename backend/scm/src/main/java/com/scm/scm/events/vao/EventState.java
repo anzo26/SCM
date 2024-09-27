@@ -9,7 +9,9 @@ public enum EventState {
     PROP_ADD,
     PROP_REMOVED,
     REVERTED,
-    DUPLICATED
-
-
+    DUPLICATED,
+    MERGED,
+    MERGE_TAG_ADD,
+    MERGE_PROP_ADD,
+    MERGE_UPDATED
 }

@@ -34,6 +34,7 @@ public class ContactServices {
     private MongoTemplateService mongoTemplateService;
     private TenantServices tenantServices;
     private EventsServices eventsServices;
+    private ContactServices contactServices;
     private EventsCheck eventsCheck;
     private static final Logger log = Logger.getLogger(ContactServices.class.toString());
 
@@ -383,5 +384,73 @@ public class ContactServices {
         }
     }
 
+    public Map<String, List<ContactDTO>> findDuplicateContactsByTitleAndEmail(String tenantUniqueName) {
+        if (tenantUniqueName.isEmpty()) {
+            throw new CustomHttpException(ExceptionMessage.TENANT_NAME_EMPTY.getExceptionMessage(), 400, ExceptionCause.USER_ERROR);
+        }
+        if (!mongoTemplateService.collectionExists(tenantUniqueName + CollectionType.MAIN.getCollectionType())) {
+            throw new CustomHttpException(ExceptionMessage.COLLECTION_NOT_EXIST.getExceptionMessage(), 500, ExceptionCause.SERVER_ERROR);
+        }
+
+        List<Contact> contacts = mongoTemplate.findAll(Contact.class, tenantUniqueName + CollectionType.MAIN.getCollectionType());
+
+        Map<String, List<Contact>> potentialDuplicatesByTitle = contacts.stream()
+                .collect(Collectors.groupingBy(contact -> contact.getTitle().toLowerCase()));
+
+        Map<String, List<Contact>> potentialDuplicatesByEmail = contacts.stream()
+                .filter(contact -> contact.getProps() != null && contact.getProps().containsKey("email"))
+                .collect(Collectors.groupingBy(contact -> contact.getProps().get("email").toLowerCase()));
+
+        Map<String, List<ContactDTO>> duplicates = new HashMap<>();
+
+        potentialDuplicatesByTitle.entrySet().stream()
+                .filter(entry -> entry.getValue().size() > 1)
+                .forEach(entry -> duplicates.put(entry.getKey(), entry.getValue().stream().map(this::convertToDTO).collect(Collectors.toList())));
+
+        potentialDuplicatesByEmail.entrySet().stream()
+                .filter(entry -> entry.getValue().size() > 1)
+                .forEach(entry -> {
+                    String key = entry.getKey();
+                    duplicates.merge(key, entry.getValue().stream().map(this::convertToDTO).collect(Collectors.toList()), (existingValue, newValue) -> {
+                        existingValue.addAll(newValue);
+                        return existingValue;
+                    });
+                });
+
+        return duplicates;
+    }
+
+    public String mergeContacts(String targetContactId, String sourceContactId, String tenantUniqueName, String username) {
+        Contact targetContact = mongoTemplate.findById(targetContactId, Contact.class, tenantUniqueName + CollectionType.MAIN.getCollectionType());
+        Contact sourceContact = mongoTemplate.findById(sourceContactId, Contact.class, tenantUniqueName + CollectionType.MAIN.getCollectionType());
+
+        if (targetContact == null || sourceContact == null) {
+            throw new CustomHttpException("One or both contacts not found", 404, ExceptionCause.USER_ERROR);
+        }
+
+        List<String> mergedTags = new ArrayList<>(targetContact.getTags());
+        for (String tag : sourceContact.getTags()) {
+            if (!mergedTags.contains(tag)) {
+                mergedTags.add(tag);
+            }
+        }
+        eventsCheck.checkTagsMerging(targetContact, sourceContact, username);
+        targetContact.setTags(mergedTags);
+
+        Map<String, String> mergedProps = new HashMap<>(targetContact.getProps());
+        for (Map.Entry<String, String> entry : sourceContact.getProps().entrySet()) {
+            if (!mergedProps.containsKey(entry.getKey())) {
+                mergedProps.put(entry.getKey(), entry.getValue());
+            }
+        }
+        eventsCheck.checkPropsMerging(targetContact, sourceContact, username);
+        targetContact.setProps(mergedProps);
+
+        mongoTemplate.save(targetContact, tenantUniqueName + CollectionType.MAIN.getCollectionType());
+
+        mongoTemplate.remove(sourceContact, tenantUniqueName + CollectionType.MAIN.getCollectionType());
+
+        return "Contacts merged successfully";
+    }
 
 }

@@ -96,4 +96,46 @@ public class EventsCheck {
             }
         }
     }
+
+    public void checkTagsMerging(Contact existingContact, Contact contact, String username) {
+        List<String> existingTags = existingContact.getTags();
+        List<String> newTags = contact.getTags();
+
+        Event event = new Event();
+        event.setUser(username);
+        event.setContact(existingContact.getId());
+
+        for (String newTag : newTags) {
+            if (!existingTags.contains(newTag)) {
+                event.setEventState(EventState.MERGE_TAG_ADD);
+                event.setPropKey("TAG");
+                event.setPrevState("");
+                event.setCurrentState(newTag);
+                eventsServices.addEvent(event, existingContact.getTenantUniqueName());
+            }
+        }
+    }
+
+    public void checkPropsMerging(Contact targetContact, Contact sourceContact, String username) {
+        Map<String, String> targetProps = targetContact.getProps();
+        Map<String, String> sourceProps = sourceContact.getProps();
+
+        Event event = new Event();
+        event.setUser(username);
+        event.setContact(targetContact.getId());
+
+        for (Map.Entry<String, String> entry : sourceProps.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+
+            if (!targetProps.containsKey(key)) {
+                event.setEventState(EventState.MERGE_PROP_ADD);
+                event.setPropKey(key);
+                event.setPrevState("");
+                event.setCurrentState(value);
+                eventsServices.addEvent(event, targetContact.getTenantUniqueName());
+            }
+        }
+    }
+
 }
