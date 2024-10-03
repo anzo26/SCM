@@ -11,7 +11,7 @@ import {
     faCommentDots,
     faArrowLeft,
     faHouse,
-    faAddressBook, faTrash, faCodeMerge
+    faAddressBook, faCodeMerge
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
