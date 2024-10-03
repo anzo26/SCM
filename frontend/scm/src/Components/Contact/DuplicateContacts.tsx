@@ -314,8 +314,8 @@ const DuplicateContacts: React.FC<DuplicateContactsProps> = ({ IdToken, tenantUn
             )}
 
             {showMergeModal && mergeDetails && (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
-                    <div className="bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full">
+                <div className="fixed z-20 flex flex-col justify-center items-center bg-gray-500 bg-opacity-65 inset-0">
+                    <div className="bg-white p-10 rounded-8 shadow-lg max-w-3xl w-full my-10 h-full overflow-auto">
                         <h2 className="text-xl font-semibold mb-4">Confirm Merge</h2>
                         <p className="mb-4">The following changes will be applied:</p>
 
@@ -370,15 +370,15 @@ const DuplicateContacts: React.FC<DuplicateContactsProps> = ({ IdToken, tenantUn
                             )}
                         </div>
 
-                        <div className="flex justify-end mt-4">
+                        <div className="flex justify-center mt-4">
                             <button
-                                className="btn px-4 btn-sm bg-danger border-0 text-white mr-3 rounded-8 font-semibold hover:scale-105 transition hover:bg-danger"
+                                className="mt-4 mx-1 px-4 py-1 bg-danger text-white rounded-8 font-semibold hover:bg-danger hover:scale-105 transition"
                                 onClick={() => setShowMergeModal(false)}
                             >
                                 Cancel
                             </button>
                             <button
-                                className="btn px-4 btn-sm bg-primary border-0 text-white rounded-8 font-semibold hover:scale-105 transition hover:bg-primary"
+                                className="mt-4 mx-1 px-4 py-1 bg-primary text-white rounded-8 font-semibold hover:bg-primary hover:scale-105 transition"
                                 onClick={handleMerge}
                             >
                                 Confirm Merge
