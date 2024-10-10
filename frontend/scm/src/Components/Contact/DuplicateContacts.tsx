@@ -170,19 +170,21 @@ const DuplicateContacts: React.FC<DuplicateContactsProps> = ({ IdToken, tenantUn
         }
     };
 
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        const formattedDate = date.toLocaleString('sl-SI', {
-            timeZone: 'Europe/Ljubljana',
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false,
-        });
-        return formattedDate.replace(',', '');
+    const formatDate = (dateString: Date | undefined) => {
+        if (dateString !== undefined) {
+            const date = new Date(dateString);
+            const formattedDate = date.toLocaleString('sl-SI', {
+                timeZone: 'Europe/Ljubljana',
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false,
+            });
+            return formattedDate.replace(',', '');
+        }
     };
 
     return (

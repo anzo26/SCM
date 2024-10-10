@@ -15,47 +15,48 @@ interface ImportContactsProps {
 const ImportContacts: React.FC<ImportContactsProps> = ({ tenantUniqueName, IdToken, onClose }) => {
     const router = useRouter();
     const [showPopup, setShowPopup] = useState(false);
-    const [file, setFile] = useState<File | null>(null);
+    const [files, setFiles] = useState<FileList | null>(null); // Za več datotek
     const [requestLoading, setRequestLoading] = useState<boolean>(false);
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            setFile(e.target.files[0]);
+            setFiles(e.target.files);
         }
     };
 
     const handleImport = async () => {
-        if (!file) {
-            toast.error('Please select a file to upload');
+        if (!files || files.length === 0) {
+            toast.error('Please select at least one file to upload');
             return;
         }
-
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('tenantUniqueName', tenantUniqueName);
 
         setRequestLoading(true);
 
         try {
-            const isJsonFile = file.name.endsWith('.json');
-            const apiUrl = isJsonFile ? '/contacts/import-json' : '/contacts/import-excel';
+            for (const file of Array.from(files)) {
+                const isJsonFile = file.name.endsWith('.json');
+                const apiUrl = isJsonFile ? '/contacts/import-json' : '/contacts/import-excel';
 
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${apiUrl}`, {
-                method: 'POST',
-                headers: {
-                    'userToken': `Bearer ${IdToken}`,
-                },
-                body: formData,
-            });
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('tenantUniqueName', tenantUniqueName);
 
-            if (!res.ok) {
-                toast.error(res.statusText || 'Failed to import contacts');
-            } else {
-                toast.success('Contacts imported successfully');
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${apiUrl}`, {
+                    method: 'POST',
+                    headers: {
+                        'userToken': `Bearer ${IdToken}`,
+                    },
+                    body: formData,
+                });
+
+                if (!res.ok) {
+                    toast.error(`Failed to import contacts from ${file.name}: ${res.statusText}`);
+                } else {
+                    toast.success(`Contacts from ${file.name} imported successfully`);
+                }
             }
 
             if (onClose) onClose();
-
             router.refresh();
             setShowPopup(false);
             setRequestLoading(false);
@@ -83,35 +84,31 @@ const ImportContacts: React.FC<ImportContactsProps> = ({ tenantUniqueName, IdTok
                 <div className="fixed z-20 flex flex-col justify-center items-center bg-gray-500 bg-opacity-65 inset-0">
                     <div className="bg-white p-10 rounded-8 shadow-lg max-w-3xl w-full my-10 overflow-auto">
                         <h2 className="font-semibold text-2xl">Import Contacts</h2>
-                        <p className="font-light text-md mb-2">Select a file to import contacts. Supported formats: .xlsx, .xls, .json</p>
-                        <p className="font-light text-sm mb-2">File should follow this structure and rules:</p>
+                        <p className="font-light text-md mb-2">Select file(s) to import contacts. Supported formats: .xlsx, .xls, .json</p>
+                        <p className="font-light text-sm mb-2">File(s) should follow this structure and rules:</p>
                         <ul className="list-disc list-inside text-gray-700 text-sm mb-10">
                             <li className="mb-2">This columns are optional, but they are presets for all tenants:
                                 <b> Title, prefix, name, lastname, phoneNumber, email, address, houseNumber, company,
                                     city, postNumber, country, comment</b>
                             </li>
                             <li className="mb-2">
-                                In case <b>Title, name, lastname</b> columns are present, Title will be chosen over name and lastname, otherwise name and/or lastname will be used as title
+                                In case <b>Title, name, lastname</b> columns are present, Title will be chosen over name and lastname, otherwise name and/or lastname will be used as title.
                             </li>
-                            <li className="mb-2">Other column names will be <b>added as new properties</b> for the
-                                contact
-                            </li>
-                            <li className="mb-2">If the column value matches the column name, the value will be <b>set
-                                as a
-                                contact tag</b>
-                            </li>
-                            <li className="mb-2">If the column value <b>is empty it will be ignored</b> and skipped</li>
+                            <li className="mb-2">Other column names will be <b>added as new properties</b> for the contact.</li>
+                            <li className="mb-2">If the column value matches the column name, the value will be <b>set as a contact tag</b>.</li>
+                            <li className="mb-2">If the column value <b>is empty it will be ignored</b> and skipped.</li>
                         </ul>
 
                         <form>
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="file">
-                                    File*
+                                    File(s)*
                                 </label>
                                 <input
                                     type="file"
                                     id="file"
                                     accept=".xlsx, .xls, .json"
+                                    multiple
                                     onChange={handleFileChange}
                                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 />
