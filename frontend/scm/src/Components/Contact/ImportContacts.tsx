@@ -34,8 +34,15 @@ const ImportContacts: React.FC<ImportContactsProps> = ({ tenantUniqueName, IdTok
 
         try {
             for (const file of Array.from(files)) {
-                const isJsonFile = file.name.endsWith('.json');
-                const apiUrl = isJsonFile ? '/contacts/import-json' : '/contacts/import-excel';
+                let apiUrl = '/contacts/import-excel';
+
+                if (file.name.endsWith('.json')) {
+                    const fileContent = await file.text();
+                    const jsonData = JSON.parse(fileContent);
+
+                    //If type is atribute in data then call endpoint for registration
+                    apiUrl = jsonData.type ? '/contacts/import-json/registration' : '/contacts/import-json';
+                }
 
                 const formData = new FormData();
                 formData.append('file', file);
