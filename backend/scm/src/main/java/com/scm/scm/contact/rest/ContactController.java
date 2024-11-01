@@ -247,6 +247,30 @@ public class ContactController {
         }
     }
 
+    @PostMapping("/import-json/registration")
+    public ResponseEntity<?> importContactsFromJsonRegistration(@RequestParam("file") MultipartFile file,
+                                                    @RequestHeader("userToken") String userToken,
+                                                    @RequestParam("tenantUniqueName") String tenantUniqueName) {
+        try {
+            FirebaseToken decodedToken = userVerifyService.verifyUserToken(userToken.replace("Bearer ", ""));
+            String sanitizedUserToken = StringEscapeUtils.escapeHtml4(decodedToken.getEmail());
+
+            if (file.isEmpty() || sanitizedUserToken == null) {
+                log.log(Level.WARNING, "Invalid request");
+                return new ResponseEntity<>("Invalid request", HttpStatus.BAD_REQUEST);
+            }
+            importContactJson.importRegistrationContactsFromJson(file, sanitizedUserToken, tenantUniqueName);
+            log.log(Level.INFO, "Registration contacts imported successfully from JSON to tenant: " + tenantUniqueName);
+            return ResponseEntity.ok("Contacts imported successfully from JSON");
+
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error importing registration contacts from JSON: " + e.getMessage());
+        }
+    }
+
+
+
+
     @PutMapping(value = "/search/{tenant_unique_name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ContactDTO>> searchContacts(@PathVariable(name = "tenant_unique_name") String tenantUniqueName, @RequestHeader("userToken") String userToken, @RequestBody PredefinedSearchDTO searchDTO) {
         FirebaseToken decodedToken = userVerifyService.verifyUserToken(userToken.replace("Bearer ", ""));
