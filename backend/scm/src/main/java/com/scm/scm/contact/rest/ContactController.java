@@ -60,6 +60,7 @@ public class ContactController {
         FirebaseToken decodedToken = userVerifyService.verifyUserToken(userToken.replace("Bearer ", ""));
 
         if (!userAccessService.hasAccessToContact(decodedToken.getEmail(), tenantUniqueName)) {
+            log.log(Level.WARNING, "Access denied for user: " + decodedToken.getEmail() + " to tenant: " + tenantUniqueName);
             throw new CustomHttpException(ExceptionMessage.USER_ACCESS_TENANT.getExceptionMessage(), 403, ExceptionCause.USER_ERROR);
         }
         ContactDTO contactDTO = contactServices.findOneContact(tenantUniqueName, id);
@@ -71,6 +72,7 @@ public class ContactController {
         FirebaseToken decodedToken = userVerifyService.verifyUserToken(userToken.replace("Bearer ", ""));
 
         if (!userAccessService.hasAccessToContact(decodedToken.getEmail(), tenantUniqueName)) {
+            log.log(Level.WARNING, "Access denied for user: " + decodedToken.getEmail() + " to tenant: " + tenantUniqueName);
             throw new CustomHttpException(ExceptionMessage.USER_ACCESS_TENANT.getExceptionMessage(), 403, ExceptionCause.USER_ERROR);
         }
         List<ContactDTO> contacts = contactServices.findAllContacts(tenantUniqueName, false);
@@ -82,6 +84,7 @@ public class ContactController {
         FirebaseToken decodedToken = userVerifyService.verifyUserToken(userToken.replace("Bearer ", ""));
 
         if (!userAccessService.hasAccessToContact(decodedToken.getEmail(), tenantUniqueName)) {
+            log.log(Level.WARNING, "Access denied for user: " + decodedToken.getEmail() + " to tenant: " + tenantUniqueName);
             throw new CustomHttpException(ExceptionMessage.USER_ACCESS_TENANT.getExceptionMessage(), 403, ExceptionCause.USER_ERROR);
         }
         List<ContactDTO> contacts = contactServices.findAllContacts(tenantUniqueName, true);
@@ -95,6 +98,7 @@ public class ContactController {
         contactDTO.setUser(sanitizedUserToken);
         Boolean duplicateContact = Boolean.parseBoolean(duplicate);
         if (!userAccessService.hasAccessToContact(sanitizedUserToken, contactDTO.getTenantUniqueName())) {
+            log.log(Level.WARNING, "Access denied for user: " + decodedToken.getEmail() + " to tenant: " + contactDTO.getTenantUniqueName());
             throw new CustomHttpException(ExceptionMessage.USER_ACCESS_TENANT.getExceptionMessage(), 403, ExceptionCause.USER_ERROR);
         }
         return ResponseEntity.ok(contactServices.createContact(contactDTO, sanitizedUserToken, duplicateContact));
@@ -106,6 +110,7 @@ public class ContactController {
         String sanitizedUserToken = StringEscapeUtils.escapeHtml4(decodedToken.getEmail());
 
         if (!userAccessService.hasAccessToContact(sanitizedUserToken, contactDTO.getTenantUniqueName())) {
+            log.log(Level.WARNING, "Access denied for user: " + decodedToken.getEmail() + " to tenant: " + contactDTO.getTenantUniqueName());
             throw new CustomHttpException(ExceptionMessage.USER_ACCESS_TENANT.getExceptionMessage(), 403, ExceptionCause.USER_ERROR);
         }
         return ResponseEntity.ok(contactServices.updateContact(contactDTO, sanitizedUserToken));
@@ -117,6 +122,7 @@ public class ContactController {
         String sanitizedUserToken = StringEscapeUtils.escapeHtml4(decodedToken.getEmail());
 
         if (!userAccessService.hasAccessToContact(sanitizedUserToken, tenantUniqueName)) {
+            log.log(Level.WARNING, "Access denied for user: " + decodedToken.getEmail() + " to tenant: " + tenantUniqueName);
             throw new CustomHttpException(ExceptionMessage.USER_ACCESS_TENANT.getExceptionMessage(), 403, ExceptionCause.USER_ERROR);
         }
         String cleanId = StringEscapeUtils.escapeHtml4(id);
@@ -131,6 +137,7 @@ public class ContactController {
         String sanitizedUserToken = StringEscapeUtils.escapeHtml4(decodedToken.getEmail());
 
         if (!userAccessService.hasAccessToContact(sanitizedUserToken, tenantUniqueName)) {
+            log.log(Level.WARNING, "Access denied for user: " + decodedToken.getEmail() + " to tenant: " + tenantUniqueName);
             throw new CustomHttpException(ExceptionMessage.USER_ACCESS_TENANT.getExceptionMessage(), 403, ExceptionCause.USER_ERROR);
         }
         String cleanId = StringEscapeUtils.escapeHtml4(id);
@@ -145,6 +152,7 @@ public class ContactController {
         String sanitizedUserToken = StringEscapeUtils.escapeHtml4(decodedToken.getEmail());
 
         if (!userAccessService.hasAccessToContact(sanitizedUserToken, tenantUniqueName)) {
+            log.log(Level.WARNING, "Access denied for user: " + decodedToken.getEmail() + " to tenant: " + tenantUniqueName);
             throw new CustomHttpException(ExceptionMessage.USER_ACCESS_TENANT.getExceptionMessage(), 403, ExceptionCause.USER_ERROR);
         }
         String cleanTenantUniqueName = StringEscapeUtils.escapeHtml4(tenantUniqueName);
@@ -161,6 +169,7 @@ public class ContactController {
         String sanitizedUserToken = StringEscapeUtils.escapeHtml4(decodedToken.getEmail());
 
         if (!userAccessService.hasAccessToContact(sanitizedUserToken, tenantUniqueName)) {
+            log.log(Level.WARNING, "Access denied for user: " + decodedToken.getEmail() + " to tenant: " + tenantUniqueName);
             throw new CustomHttpException(ExceptionMessage.USER_ACCESS_TENANT.getExceptionMessage(), 403, ExceptionCause.USER_ERROR);
         }
         String cleanId = StringEscapeUtils.escapeHtml4(id);
@@ -203,11 +212,13 @@ public class ContactController {
         String sanitizedUserToken = StringEscapeUtils.escapeHtml4(decodedToken.getEmail());
 
         if (file.isEmpty() || sanitizedUserToken == null) {
+            log.log(Level.WARNING, "Invalid request!");
             return new ResponseEntity<>("Invalid request", HttpStatus.BAD_REQUEST);
         }
 
         try {
             importContactExcel.importContactsFromExcel(file, sanitizedUserToken, tenantUniqueName);
+            log.log(Level.INFO, "Contacts imported successfully to tenant: " + tenantUniqueName);
             return new ResponseEntity<>("Contacts imported successfully", HttpStatus.OK);
         } catch (Exception e) {
             log.severe("Error occurred during import: " + e.getMessage());
@@ -224,10 +235,12 @@ public class ContactController {
             String sanitizedUserToken = StringEscapeUtils.escapeHtml4(decodedToken.getEmail());
 
             if (file.isEmpty() || sanitizedUserToken == null) {
+                log.log(Level.WARNING, "Invalid request");
                 return new ResponseEntity<>("Invalid request", HttpStatus.BAD_REQUEST);
             }
             
             importContactJson.importContactsFromJson(file, sanitizedUserToken, tenantUniqueName);
+            log.log(Level.INFO, "Contacts imported successfully from JSON to tenant: " + tenantUniqueName);
             return ResponseEntity.ok("Contacts imported successfully from JSON");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error importing contacts from JSON: " + e.getMessage());
@@ -240,6 +253,7 @@ public class ContactController {
         String sanitizedUserToken = StringEscapeUtils.escapeHtml4(decodedToken.getEmail());
 
         if (!userAccessService.hasAccessToContact(sanitizedUserToken, tenantUniqueName)) {
+            log.log(Level.WARNING, "Access denied for user: " + decodedToken.getEmail() + " to tenant: " + tenantUniqueName);
             throw new CustomHttpException(ExceptionMessage.USER_ACCESS_TENANT.getExceptionMessage(), 403, ExceptionCause.USER_ERROR);
         }
         PredefinedSearch search = predefinedSearchServices.convertToEntity(searchDTO);
@@ -252,6 +266,7 @@ public class ContactController {
         String sanitizedUserToken = StringEscapeUtils.escapeHtml4(decodedToken.getEmail());
 
         if (!userAccessService.hasAccessToContact(sanitizedUserToken, tenantUniqueName)) {
+            log.log(Level.WARNING, "Access denied for user: " + decodedToken.getEmail() + " to tenant: " + tenantUniqueName);
             throw new CustomHttpException(ExceptionMessage.USER_ACCESS_TENANT.getExceptionMessage(), 403, ExceptionCause.USER_ERROR);
         }
 
@@ -271,7 +286,7 @@ public class ContactController {
         String username = decodedToken.getEmail();
 
         String result = contactServices.mergeContacts(targetContactId, sourceContactId, tenantUniqueName, username);
-
+        log.log(Level.INFO, "Merging contacts on tenant: " + tenantUniqueName + ", target contact ID is: " + targetContactId + ", source contact ID is: " + sourceContactId);
         return ResponseEntity.ok(result);
     }
 }

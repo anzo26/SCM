@@ -86,13 +86,16 @@ public class ContactServices {
 
     public ContactDTO findOneContact(String tenantUniqueName, String contactId) {
         if (contactId.isEmpty() || tenantUniqueName.isEmpty()) {
+            log.log(Level.WARNING, "ContactId or uniqueTenantName is empty", tenantUniqueName + " : " + contactId);
             throw new CustomHttpException("ContactId or uniqueTenantName is empty", 400, ExceptionCause.USER_ERROR);
         }
         if (!mongoTemplateService.collectionExists(tenantUniqueName + CollectionType.MAIN.getCollectionType())) {
+            log.log(Level.WARNING, ExceptionMessage.COLLECTION_NOT_EXIST.getExceptionMessage(), ExceptionCause.SERVER_ERROR);
             throw new CustomHttpException(ExceptionMessage.COLLECTION_NOT_EXIST.getExceptionMessage(), 500, ExceptionCause.SERVER_ERROR);
         }
         Contact contact = mongoTemplate.findById(contactId, Contact.class, tenantUniqueName + CollectionType.MAIN.getCollectionType());
         if (contact == null) {
+            log.log(Level.WARNING, "Contact not found");
             throw new CustomHttpException("Contact not found", 404, ExceptionCause.USER_ERROR);
         }
         log.log(Level.INFO, "Contact found with id: {0}", contactId);
@@ -101,12 +104,15 @@ public class ContactServices {
 
     public List<ContactDTO> findAllContacts(String tenantUniqueName, boolean deleted) {
         if (tenantUniqueName.isEmpty()) {
+            log.log(Level.WARNING, "TenantUniqueName is empty", tenantUniqueName);
             throw new CustomHttpException(ExceptionMessage.TENANT_NAME_EMPTY.getExceptionMessage(), 400, ExceptionCause.USER_ERROR);
         }
         if (!mongoTemplateService.collectionExists(tenantUniqueName + CollectionType.MAIN.getCollectionType())) {
+            log.log(Level.WARNING, "Tenant collection " + tenantUniqueName + CollectionType.MAIN.getCollectionType() + " doesn't exists.");
             throw new CustomHttpException(ExceptionMessage.COLLECTION_NOT_EXIST.getExceptionMessage(), 500, ExceptionCause.SERVER_ERROR);
         }
         if (deleted && !mongoTemplateService.collectionExists(tenantUniqueName + CollectionType.DELETED.getCollectionType())) {
+            log.log(Level.WARNING, "Tenant collection " + tenantUniqueName + CollectionType.DELETED.getCollectionType() + " doesn't exists.");
             throw new CustomHttpException(ExceptionMessage.COLLECTION_NOT_EXIST.getExceptionMessage(), 500, ExceptionCause.SERVER_ERROR);
         }
         if(deleted){
@@ -133,18 +139,22 @@ public class ContactServices {
         sanitizedContactDTO.setCreatedAt(LocalDateTime.now().toString());
         Contact contact = convertToEntity(sanitizedContactDTO);
         if (contact.getTenantUniqueName().isEmpty()) {
+            log.log(Level.WARNING, "TenantUniqueName is empty in contact: " + contact.getTitle(), contact);
             throw new CustomHttpException(ExceptionMessage.TENANT_NAME_EMPTY.getExceptionMessage(), 400, ExceptionCause.USER_ERROR);
         }
         if (!contact.getId().isEmpty()) {
             Contact existingContact = mongoTemplate.findById(contact.getId(), Contact.class, contact.getTenantUniqueName() + CollectionType.MAIN.getCollectionType());
             if (existingContact != null) {
+                log.log(Level.WARNING, "Contact already exists!", existingContact);
                 throw new CustomHttpException("Contact already exists", 400, ExceptionCause.USER_ERROR);
             }
         }
         if (!mongoTemplateService.collectionExists(contact.getTenantUniqueName() + CollectionType.MAIN.getCollectionType())) {
+            log.log(Level.WARNING, "Collection not exist: " + contact.getTenantUniqueName() + CollectionType.MAIN.getCollectionType(), contact.getTenantUniqueName() + CollectionType.MAIN.getCollectionType());
             throw new CustomHttpException(ExceptionMessage.COLLECTION_NOT_EXIST.getExceptionMessage(), 500, ExceptionCause.SERVER_ERROR);
         }
         if (contact.getTitle().isEmpty()) {
+            log.log(Level.WARNING, "Contact title is empty!", contact.getTitle());
             throw new CustomHttpException("Contact title is empty", 400, ExceptionCause.USER_ERROR);
         }
         contact.setId(contact.generateId(contact.getTitle()));
@@ -169,12 +179,15 @@ public class ContactServices {
     public ContactDTO updateContact(ContactDTO contactDTO, String username) {
         Contact contact = convertToEntity(contactDTO);
         if (contact.getTenantUniqueName().isEmpty()) {
+            log.log(Level.WARNING, "TemantUniqueName is empty in contact: " + contact.getTitle(), contact);
             throw new CustomHttpException(ExceptionMessage.TENANT_NAME_EMPTY.getExceptionMessage(), 400, ExceptionCause.USER_ERROR);
         }
         if (contact.getId().isEmpty()) {
+            log.log(Level.WARNING, "Contact id is empty", contact.getId());
             throw new CustomHttpException("Contact id is empty", 400, ExceptionCause.USER_ERROR);
         }
         if (!mongoTemplateService.collectionExists(contact.getTenantUniqueName() + CollectionType.MAIN.getCollectionType())) {
+            log.log(Level.WARNING, "Collection not exist: " + contact.getTenantUniqueName() + CollectionType.MAIN.getCollectionType(), contact.getTenantUniqueName() + CollectionType.MAIN.getCollectionType());
             throw new CustomHttpException(ExceptionMessage.COLLECTION_NOT_EXIST.getExceptionMessage(), 500, ExceptionCause.SERVER_ERROR);
         }
 
@@ -205,19 +218,23 @@ public class ContactServices {
             log.log(Level.INFO, String.format("Contact updated with id: %s %s %s ", contact.getId(), FOR_TENANT, contact.getTenantUniqueName()));
             return convertToDTO(existingContact);
         } else {
+            log.log(Level.WARNING, "Contact does not exist!");
             throw new CustomHttpException("Contact does not exist", 500, ExceptionCause.SERVER_ERROR);
         }
     }
 
     public String revertContact (String tenantUniqueName, String contactId, String username) {
         if (contactId.isEmpty() || tenantUniqueName.isEmpty()) {
+            log.log(Level.WARNING, "ContactId or uniqueTenantName is empty");
             throw new CustomHttpException("ContactId or uniqueTenantName is empty", 400, ExceptionCause.USER_ERROR);
         }
         if (!mongoTemplateService.collectionExists(tenantUniqueName + CollectionType.MAIN.getCollectionType()) || !mongoTemplateService.collectionExists(tenantUniqueName + CollectionType.DELETED.getCollectionType())) {
+            log.log(Level.WARNING, "Collection not exist: " + tenantUniqueName + CollectionType.MAIN.getCollectionType(), tenantUniqueName + CollectionType.MAIN.getCollectionType());
             throw new CustomHttpException(ExceptionMessage.COLLECTION_NOT_EXIST.getExceptionMessage(), 500, ExceptionCause.SERVER_ERROR);
         }
         Contact contact = mongoTemplate.findById(contactId, Contact.class, tenantUniqueName + CollectionType.DELETED.getCollectionType());
         if (contact == null ) {
+            log.log(Level.WARNING, "Contact not found!");
             throw new CustomHttpException("Contact not found", 404, ExceptionCause.USER_ERROR);
         }
         mongoTemplate.remove(contact, tenantUniqueName + CollectionType.DELETED.getCollectionType());
@@ -236,18 +253,22 @@ public class ContactServices {
 
     public String deleteContact(String tenantUniqueName, String contactId, boolean delete, String username) {
         if (contactId.isEmpty() || tenantUniqueName.isEmpty()) {
+            log.log(Level.WARNING, "ContactId or uniqueTenantName is empty");
             throw new CustomHttpException("ContactId or uniqueTenantName is empty", 400, ExceptionCause.USER_ERROR);
         }
         if (!mongoTemplateService.collectionExists(tenantUniqueName + CollectionType.MAIN.getCollectionType()) || !mongoTemplateService.collectionExists(tenantUniqueName + CollectionType.DELETED.getCollectionType())) {
+            log.log(Level.WARNING, "Collection not exist: " + tenantUniqueName + CollectionType.MAIN.getCollectionType(), tenantUniqueName + CollectionType.MAIN.getCollectionType());
             throw new CustomHttpException(ExceptionMessage.COLLECTION_NOT_EXIST.getExceptionMessage(), 500, ExceptionCause.SERVER_ERROR);
         }
         Contact contact = mongoTemplate.findById(contactId, Contact.class, tenantUniqueName + CollectionType.MAIN.getCollectionType());
         if (contact == null && !delete) {
+            log.log(Level.WARNING, "Contact not found!");
             throw new CustomHttpException("Contact not found", 404, ExceptionCause.USER_ERROR);
         }
         if (delete) {
             Contact deletedContact = mongoTemplate.findById(contactId, Contact.class, tenantUniqueName + CollectionType.DELETED.getCollectionType());
             if (deletedContact == null) {
+                log.log(Level.WARNING, "Contact not found in deleted collection.");
                 throw new CustomHttpException("Contact not found in deleted collection", 404, ExceptionCause.USER_ERROR);
             }
             mongoTemplate.remove(deletedContact, tenantUniqueName + CollectionType.DELETED.getCollectionType());
@@ -269,9 +290,11 @@ public class ContactServices {
 
     public String deleteMultipleContacts(String tenantUniqueName, List<String> contactIds, String username) {
         if (tenantUniqueName.isEmpty() || contactIds.isEmpty()) {
+            log.log(Level.WARNING, "TenantUniqueName or contactIds are empty");
             throw new CustomHttpException("TenantUniqueName or contactIds are empty", 400, ExceptionCause.USER_ERROR);
         }
         if (!mongoTemplateService.collectionExists(tenantUniqueName + CollectionType.MAIN.getCollectionType())) {
+            log.log(Level.WARNING, "Collection not exist: " + tenantUniqueName + CollectionType.MAIN.getCollectionType(), tenantUniqueName + CollectionType.MAIN.getCollectionType());
             throw new CustomHttpException(ExceptionMessage.COLLECTION_NOT_EXIST.getExceptionMessage(), 500, ExceptionCause.SERVER_ERROR);
         }
 
@@ -281,6 +304,7 @@ public class ContactServices {
                 .toList();
 
         if (contacts.isEmpty()) {
+            log.log(Level.WARNING, "No contacts found for the provided IDs");
             throw new CustomHttpException("No contacts found for the provided IDs", 404, ExceptionCause.USER_ERROR);
         }
 
@@ -300,12 +324,15 @@ public class ContactServices {
 
     public List<ContactDTO> getContactsBySearch(PredefinedSearch search) {
         if (search.getOnTenant().isEmpty()) {
+            log.log(Level.WARNING, "Search query or tenant is empty", search);
             throw new CustomHttpException("Search query or tenant is empty", 400, ExceptionCause.USER_ERROR);
         }
         if (!mongoTemplateService.collectionExists(search.getOnTenant() + CollectionType.MAIN.getCollectionType())) {
+            log.log(Level.WARNING, "Collection not exist: " + search.getOnTenant() + CollectionType.MAIN.getCollectionType(), search.getOnTenant() + CollectionType.MAIN.getCollectionType());
             throw new CustomHttpException(ExceptionMessage.COLLECTION_NOT_EXIST.getExceptionMessage(), 404, ExceptionCause.SERVER_ERROR);
         }
         if (search.getSearchQuery().isEmpty()) {
+            log.log(Level.INFO, "Search query is empty!");
             List<Contact> onlyFilteredContacts = mongoTemplate.findAll(Contact.class, search.getOnTenant() + CollectionType.MAIN.getCollectionType()).stream().filter(contact -> new HashSet<>(contact.getTags()).containsAll(search.getFilter())).collect(Collectors.toList());
             Comparator<Contact> comparator = getComparatorBasedOnOrientation(search.getSortOrientation());
             onlyFilteredContacts.sort(comparator);
@@ -313,8 +340,10 @@ public class ContactServices {
         }
         List<Contact> allContactsByQuery = getContactsBySearchQuery(search.getSearchQuery(), mongoTemplate.findAll(Contact.class, search.getOnTenant() + CollectionType.MAIN.getCollectionType()), search.getSortOrientation());
         if (search.getFilter().isEmpty()) {
+            log.log(Level.INFO, "Filter is empty!");
             return allContactsByQuery.stream().map(this::convertToDTO).toList();
         }
+        log.log(Level.INFO, "Return filteredContacts!");
         List<Contact> filteredContacts = allContactsByQuery.stream().filter(contact -> new HashSet<>(contact.getTags()).containsAll(search.getFilter())).toList();
         return filteredContacts.stream().map(this::convertToDTO).toList();
     }
@@ -356,12 +385,15 @@ public class ContactServices {
         for (ContactDTO contactDTO : contacts) {
             Contact contact = convertToEntity(contactDTO);
             if (contact.getTenantUniqueName().isEmpty()) {
+                log.log(Level.WARNING, "Tenant unique name is empty", contact);
                 throw new CustomHttpException(ExceptionMessage.TENANT_NAME_EMPTY.getExceptionMessage(), 400, ExceptionCause.USER_ERROR);
             }
             if (contact.getTitle().isEmpty()) {
+                log.log(Level.WARNING, "Contact title is empty!", contact);
                 throw new CustomHttpException("Contact title is empty", 400, ExceptionCause.USER_ERROR);
             }
             if (!mongoTemplateService.collectionExists(contact.getTenantUniqueName() + CollectionType.MAIN.getCollectionType())) {
+                log.log(Level.WARNING, "Collection not exist: " + contact.getTenantUniqueName() + CollectionType.MAIN.getCollectionType(), contact.getTenantUniqueName() + CollectionType.MAIN.getCollectionType());
                 throw new CustomHttpException(ExceptionMessage.COLLECTION_NOT_EXIST.getExceptionMessage(), 500, ExceptionCause.SERVER_ERROR);
             }
 
@@ -382,9 +414,11 @@ public class ContactServices {
 
     public Map<String, List<ContactDTO>> findDuplicateContactsByTitleAndEmail(String tenantUniqueName) {
         if (tenantUniqueName.isEmpty()) {
+            log.log(Level.WARNING, "TenantUniqueName is empty!");
             throw new CustomHttpException(ExceptionMessage.TENANT_NAME_EMPTY.getExceptionMessage(), 400, ExceptionCause.USER_ERROR);
         }
         if (!mongoTemplateService.collectionExists(tenantUniqueName + CollectionType.MAIN.getCollectionType())) {
+            log.log(Level.WARNING, "Collection not exist: " + tenantUniqueName + CollectionType.MAIN.getCollectionType(), tenantUniqueName + CollectionType.MAIN.getCollectionType());
             throw new CustomHttpException(ExceptionMessage.COLLECTION_NOT_EXIST.getExceptionMessage(), 500, ExceptionCause.SERVER_ERROR);
         }
 
@@ -430,6 +464,7 @@ public class ContactServices {
         Contact sourceContact = mongoTemplate.findById(sourceContactId, Contact.class, tenantUniqueName + CollectionType.MAIN.getCollectionType());
 
         if (targetContact == null || sourceContact == null) {
+            log.log(Level.WARNING, "One or both contacts not found");
             throw new CustomHttpException("One or both contacts not found", 404, ExceptionCause.USER_ERROR);
         }
 
@@ -454,6 +489,7 @@ public class ContactServices {
         mongoTemplate.save(targetContact, tenantUniqueName + CollectionType.MAIN.getCollectionType());
 
         mongoTemplate.remove(sourceContact, tenantUniqueName + CollectionType.MAIN.getCollectionType());
+        log.log(Level.INFO, "Contacts merged successfully!");
 
         return "Contacts merged successfully";
     }
